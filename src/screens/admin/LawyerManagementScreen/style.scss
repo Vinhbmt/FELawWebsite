@@ -1,0 +1,62 @@
+.lawyer-admin-page {
+    align-items: center;
+    justify-content: center;
+}
+
+.category-option {
+    display: flex;
+    padding-left: 300px;
+
+}
+
+.lawyer-info {
+    padding-left: 300px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.add-form {
+    margin-right: 50px;
+}
+
+.add-cate-btn {
+    width: 100px;
+    margin-top: 10px;
+    background-color: #0079bf; 
+    color: white;
+    border-radius: 5px;
+
+    &:hover {
+    cursor: pointer;
+    background-color: #055a8c;
+    }
+}
+
+table {
+    width: 100%;
+    min-width: 400px;
+    border-spacing: 0;
+    border: none;
+}
+
+thead {
+    background-color: var(--second-bg);
+}
+
+tr {
+    text-align: center;
+}
+
+td {
+    text-transform: capitalize;
+    padding: 15px 50px;
+    border-bottom: solid 1px black;
+}
+
+th {
+    text-transform: capitalize;
+    padding: 15px 50px;
+    border-bottom: solid 1px black;
+}
+

@@ -1,0 +1,145 @@
+.header {
+    display: flex;
+    height: 100px;
+    max-height: 300px;
+    align-items: center; 
+    border-bottom: 4px #0a8bb6 solid;
+}
+
+.header_logo {
+    padding-left: 200px;
+    padding-right: 100px;
+}
+
+.logo {
+    height: 80px;
+}
+
+
+
+.search-box {
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    background: #e5e5e7;
+    height: 20px;
+    border-radius: 40px;
+    padding: 10px;
+}
+
+.search-btn {
+    color: #0a8bb6;
+    float: right;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e5e5e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    color: black;
+    font-size: 16px;
+    transition: 0.4s;
+    line-height: 20px;
+    width: 350px;
+}
+
+a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #a90f29;
+    font-weight: bold;
+}
+
+a:hover {
+    color: black;
+}
+
+.login {
+    border-left: 1px solid #eaeaea;
+    height: 100%;
+    padding: 35px 20px;
+    border-right: 1px solid #eaeaea;
+    a {
+        cursor: pointer;
+    }
+}
+
+.account-info {
+    display: flex;
+}
+
+.user-name {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.dropdownmenu_container{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    li {
+        list-style-type: none;
+        margin-left: 20px;
+        margin-right: 30px;
+    }
+}
+
+.dropdownmenu_children{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.dropbtn {
+    background-color: white;
+    color: black;
+    padding: 16px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-left: #0a8bb6 solid 2px;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  .dropdown:hover .dropbtn {color: #0a8bb6;}
