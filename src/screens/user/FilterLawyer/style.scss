@@ -1,0 +1,47 @@
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filter-content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+
+    .filter-sidebar {
+        margin-right: 20px;
+        width: 350px;
+
+        p {
+            text-align: justify;
+            margin-top: 30px;
+            padding-right: 30px;
+        }
+    }
+}
+
+.major_lawyer {
+    margin-bottom: 20px;
+}
+
+// .major_select {
+//     width: 100%;
+// }
+
+.province_select {
+    width: 300px;
+}
+
+.apply-filter {
+    margin-left: 120px;
+    margin-top: 20px;
+
+    button {
+        border-radius: 5px;
+        border: none;
+        padding: 10px 10px 10px 10px;
+        background-color: rgb(129, 173, 211);
+        color: white;
+    }
+}

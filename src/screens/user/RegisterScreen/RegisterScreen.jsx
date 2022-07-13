@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTitle } from "../../../core/customHook";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import './style.scss';
 import AuthAction from "../../../redux/actions/AuthAction";
 import { useEffect } from "react";
+import {toast } from 'react-toastify';
 
 const RegisterScreen = () => {
     useTitle("Đăng ký");
@@ -36,47 +37,53 @@ const RegisterScreen = () => {
 
     const onSubmitRegister = async (data) => {
         const { email , firstName , lastName , password } = data;
-        console.log("helooo")
-        const response = await dispatch(await AuthAction.asyncRegister({email, firstName, lastName, password}));
-        if(response.status === 201) {
-            navigate('/login');
+        try {
+            const response = await dispatch(await AuthAction.asyncRegister({email, firstName, lastName, password}));
+            if(response.status === 201) {
+                navigate('/login');
+                toast.success("Tạo tài khoản thành công !");
+            }
+        } catch (error) {
+            
         }
+        
     }
 
     return(
-        <div className="user-page register-user-page">
-            <div className='register-content'>
-                <div className='register-title mg-tb-20'>
-                    <h3 className="title-format">Tạo tài khoản mới</h3>
-                </div>
+            <div className='center5'>
+                <h1 className="title-format">Tạo tài khoản mới</h1>
                 <form onSubmit={handleSubmit(onSubmitRegister)} className='register-form'>
-                    <div>
-                        <label className={classnames("d-block")} htmlFor="email">Email</label>
+                    <div className="txt_field">
                         <input {...register('email')} type="text" className={classnames("width-300", `${errors.email ? "border border-danger" : ""}`)} id="email" placeholder="Email"/>
                         <p className="text-danger">{errors.email?.message}</p>
+                        <span></span>
+                        <label><i class='fas fa-id-card'></i>Email</label>
                     </div>
-                    <div>
-                        <label className={classnames("d-block")} htmlFor="firstName">First Name</label>
-                        <input {...register('firstName')} type="text" className={classnames("width-300", `${errors.firstName ? "border border-danger" : ""}`)} id="firstName" placeholder=" First Name"/>
+                    <div className="txt_field">
+                        <input {...register('firstName')} type="text" className={classnames("width-300", `${errors.firstName ? "border border-danger" : ""}`)} id="firstName" placeholder="First Name"/>
                         <p className="text-danger">{errors.firstName?.message}</p>
+                        <span></span>
+                        <label><i class='fas fa-address-book mr-2'></i>Họ</label>
                     </div>
-                    <div>
-                        <label className={classnames("d-block")} htmlFor="lastName">Last Name</label>
+                    <div className="txt_field">
                         <input {...register('lastName')} type="text" className={classnames("width-300", `${errors.lastName ? "border border-danger" : ""}`)} id="lastName" placeholder=" Last Name"/>
                         <p className="text-danger">{errors.lastName?.message}</p>
+                        <span></span>
+                        <label><i class='far fa-address-book mr-2'></i>Tên</label>
                     </div>
-                    <div>
-                        <label className={classnames("d-block")} htmlFor="password">Mật khẩu</label>
+                    <div className="txt_field">
                         <input {...register('password')} type="password" className={classnames("width-300", `${errors.password ? "border border-danger" : ""}`)} id="password" placeholder="Password"/>
                         <p className="text-danger">{errors.password?.message}</p>
+                        <span></span>
+                        <label><i class='fas fa-lock'></i>Mật khẩu</label>
                     </div>
-                    <div className="mg-t-20" style={{"textAlign": "center"}}>
-                        <button className={classnames("width-300 btn-custom")} disabled={isSubmitting} type="submit">Đăng ký</button>
+                    <input type="submit" value="Create account" />
+                    <div class="signup_link">
+                        Already have an account?
+                        <Link className="nav-link" to="/login">Sign in</Link>
                     </div>
                 </form>
-                <div className="navigate-login" onClick={() => navigate('/login')}>Đăng nhập ngay!</div>
             </div>
-        </div>
     )
 }
 

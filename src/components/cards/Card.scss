@@ -1,17 +1,78 @@
-article {
+.info-container1 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     background: #eee5e9;
     border: none;
     box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
-    border-radius: 20px;
-    text-align: center;
-    width: 400px;
-    height: 520px;
+    border-radius: 10px;
+    width: 378px;
+    height: 480px;
     transition: transform .3s;
+    padding: 10px 10px 10px 10px;
 }
 
-article:hover {
+.info-container1:hover {
     transform: translateY(5px);
     box-shadow: 2px 2px 26px 0px rgba(0,0,0,0.3);
+}
+
+.image-detail-info1 {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+
+    .image1 {
+        cursor: pointer;
+        img{
+            max-width: 120px;
+            max-height: 120px;
+        }
+    }
+}
+
+.detail-info1 {
+    display: block;
+    margin-left: 20px;
+}
+
+.lawyer-name1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #041451;
+}
+
+.rating {
+    margin-bottom: 10px;
+}
+
+.rate-score {
+    margin-bottom: 10px;
+}
+
+.address {
+    margin-bottom: 10px;
+}
+
+.major-field {
+    height: 100px;
+
+    label {
+        font-weight: bold;
+    }
+}
+
+.descrip {
+    border-top: 1px solid rgb(201, 199, 199);
+    label {
+        font-weight: bold;
+    }
+}
+
+.show-more {
+    color: #072bba;
+    cursor: pointer;
 }
 
 article img {

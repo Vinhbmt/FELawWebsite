@@ -1,3 +1,10 @@
+.whole {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    //align-items: center;
+}
+
 .grid {
     margin: 80px;
     margin-top: 40px;
@@ -20,19 +27,27 @@
 }
 
 .background_image {
-    background-image: url(./HOME1_lsvannn.jpg);
+    display: flex;
+    background-image: url(345.jpg);
+    // background-attachment: fixed;
+    // background-position: center;
+    // background-repeat: no-repeat;
     background-size: cover;
-    height: 388px;
+    height: 800px;
+    justify-content: center;
+    align-items: center;
 }
 
-.container {
+.container_0 {
+    display: flex;
+    flex-direction: column;
     width: 1170px;
    // align-items: center;
-   padding-top: 50px;
+   justify-content: center;
 }
 
 .container_1 {
-    align-items: center;
+    //align-items: center;
     margin-top: 20px;
     a {
         padding: 0 11px 10px 11px;
@@ -57,7 +72,11 @@
     .find_law {
         margin-right: 20px;
         margin-left: 20px;
-        border-bottom: #0a8bb6 solid 4px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        border: solid 1px gray;
+        padding: 10px 10px 10px 10px;
+        //border-bottom: #0a8bb6 solid 2px;
         a {
             font-size: 25px;
             color: white;
@@ -119,3 +138,93 @@
     border-style: solid;
 }
 
+.decor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // margin-left: 200px;
+    // margin-right: 200px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: #e2e0e0;
+    padding-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 50px;
+    
+    .decor-text {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+
+        div {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+    }
+
+    .decor-card {
+        display: flex;
+        flex-direction: row;
+        margin-top: 50px;
+
+        .card1 {
+            display: flex;
+            flex-direction: column;
+            width: 25%;
+            height: 180px;
+            border: solid 1px rgba(0, 0, 0, 0.3);
+            //justify-content: center;
+            //align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+            margin: 15px 15px 15px 15px;
+            background-color: #eeeeee;
+
+            .card1-icon {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 40px;
+                color: #003594;
+                margin-top: 20px;
+            }
+
+            .card1-text {
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+.decor-image {
+    display: flex;
+    background-image: url(456.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 600px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+
+    div {
+        text-align: center;
+        margin-left: 250px;
+        margin-right: 250px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        p {
+            font-size: 20px;
+            margin-top: 30px;
+        }
+    }
+}

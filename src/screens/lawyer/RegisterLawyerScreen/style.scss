@@ -1,12 +1,13 @@
 .center {
-  top: 50%;
+  position: relative; 
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
   width: 800px;
   background: linear-gradient(120deg, #a0e2f7, #d1d7ef);
   border-radius: 10px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
   margin-bottom: 30px;
+  margin-top: 30px;
   /* border-color: black;
     border-width: 2px; */
   /* border-style: outset; */
@@ -14,7 +15,26 @@
 
 .submit-form {
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-form {
+  display: flex;
   flex-direction: row;
+}
+
+.info-upload {
+  margin-right: 30px;
+  width: 250px;
+}
+
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  margin-left: 30px;
 }
 
 .center h1 {
@@ -27,7 +47,6 @@
 .center form {
   padding: 20px 40px;
   box-sizing: border-box;
-  width: 50%;
 }
 
 form .txt_field {
@@ -146,6 +165,12 @@ i[class='fas fa-id-card'] {
   max-width: 400px;
 }
 
+.image {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .file-input-label {
   display: block;
   margin: auto;
@@ -155,4 +180,18 @@ i[class='fas fa-id-card'] {
   text-align: center;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.select label {
+  font-size: 16px;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.select i {
+  margin-right: 10px;
+}
+
+.select {
+  border-bottom: 2px solid #ffffff;
 }

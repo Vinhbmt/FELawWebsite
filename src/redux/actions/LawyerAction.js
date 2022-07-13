@@ -79,6 +79,7 @@ class LawyerAction extends ApiAction {
             }
         }
     }
+
 }
 
 export default new LawyerAction();

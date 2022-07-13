@@ -1,19 +1,29 @@
-.lawyer-admin-page {
+.lawyer-container {
     align-items: center;
     justify-content: center;
+    margin-left: 300px;
+    text-align: center;
 }
 
-.category-option {
-    display: flex;
-    padding-left: 300px;
+.child-container {
 
 }
 
 .lawyer-info {
-    padding-left: 300px;
     justify-content: space-between;
     align-items: center;
     display: flex;
+
+    tr {
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    td {
+        padding: 15px 15px;
+        border-bottom: solid 1px black;
+        width: 20%;
+    }
 }
 
 .add-form {
@@ -44,19 +54,55 @@ thead {
     background-color: var(--second-bg);
 }
 
-tr {
-    text-align: center;
-}
 
-td {
-    text-transform: capitalize;
-    padding: 15px 50px;
-    border-bottom: solid 1px black;
-}
 
 th {
-    text-transform: capitalize;
     padding: 15px 50px;
     border-bottom: solid 1px black;
+    width: 20%;
 }
 
+.info-lawyer {
+    margin-right: 60px;
+}
+
+.field-info {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    
+
+    label {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    
+
+
+}
+
+.major-info {
+
+    label {
+        font-weight: bold;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+}
+
+.view {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+
+.descrip-detail {
+    width: 25px !important;
+}
+
+.label-field {
+    font-weight: bolder;
+}

@@ -4,16 +4,26 @@ import AuthAction from "../../redux/actions/AuthAction";
 import classnames from "classnames";
 import './style.scss';
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Modal } from 'react-bootstrap';
 
 const SideBar = () => {
 
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // const { authState: { accountInfo, token } } = useSelector(state => {
-    //     return { authState: state.authState };
-    // })
+    const { authState: { accountInfo, token } } = useSelector(state => {
+        return { authState: state.authState };
+    })
+
+    const [ logoutModal, setLogoutModal ] = useState(false);
+
+    const handleShowLogout = () => {
+        setLogoutModal(true);
+    }
+    const handleCloseLogout = () => {
+        setLogoutModal(false);
+    }
 
     // const asyncGetAccountInfo = async () => {
     //     const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
@@ -28,17 +38,18 @@ const SideBar = () => {
     //     }
     // }, [])
 
-    // const onSubmitLogout = async () => {
-    //     await dispatch(await AuthAction.asyncLogout());
-    //     navigate('/admin/login');
-    // }
+    const onSubmitLogout = async () => {
+        await dispatch(await AuthAction.asyncLogout());
+        navigate('/admin/login');
+    }
 
     return(
+        // accountInfo !== null &&
          <div className={(classnames("left-menu"))}>
             <ul className="nav nav-pills flex-column mb-auto">
                 <li>
                     <NavLink to="/admin/home">
-                        <span>Vinh</span>
+                        <span>Admin</span>
                     </NavLink>
                 </li>
                 <li>
@@ -51,10 +62,24 @@ const SideBar = () => {
                         <span>Quản lý luật sư</span>
                     </NavLink>
                 </li>
-                {/* <li onClick={onSubmitLogout}>
+                <li onClick={handleShowLogout}>
                     <a><span>Đăng xuất</span></a>
-                </li> */}
+                </li>
             </ul>
+
+            <Modal show={logoutModal} enforceFocus={false} className="modal-min modal-alert">
+                    <Modal.Header>
+                        <Modal.Title></Modal.Title>
+                        <button className={classnames("btn-close")} onClick={handleCloseLogout}></button>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Xác nhận thoát? 
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button className="btn btn-danger" onClick={onSubmitLogout}>Đăng xuất</button>
+                        <button className="btn btn-light" onClick={handleCloseLogout}>Hủy</button>
+                    </Modal.Footer>
+                </Modal>
         </div>
     )
 }

@@ -4,102 +4,131 @@ import classnames from "classnames";
 import './style.scss';
 import Chart from 'react-apexcharts'
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthAction from "../../../redux/actions/AuthAction";
+import Badge from "../../../components/Badge/Badge";
+import AccountAdminAction from "../../../redux/actions/AccountAdminAction";
 
 const HomeAdminScreen = () => {
     const themeReducer = useSelector(state => state.ThemeReducer.mode)
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
+    const {authState: { token}} = useSelector (state => {
+        return { authState: state.authState };
+    })
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [listUsers, setListUsers] = useState([]);
 
-    // const { authState: { accountInfo } } = useSelector(state => {
-    //     return { authState: state.authState };
-    // })
+    const { authState: { accountInfo } } = useSelector(state => {
+        return { authState: state.authState };
+    })
 
-    // const asyncGetAccountInfo = async () => {
-    //     const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
-    //     if(!response) {
-    //         navigate('/admin/login');
-    //     }
-    // }
+    const asyncGetAccountInfo = async () => {
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+        if (!response) {
+            navigate('/admin/login');
+        }
+    }
 
-    // useEffect(async () => {
-    //     asyncGetAccountInfo();
-    // }, [])
+    useEffect(() => {
+        asyncGetAccountInfo();
+    }, [])
+
+    const getListUser = async () => {
+        const response = await dispatch(await AccountAdminAction.asyncGetUser());
+        if(response.status === 200) {
+            await setListUsers(response.data);
+        }
+    }
+
+    useEffect(() => {
+        getListUser();
+    }, [])
 
     const chartOptions = {
-        series: [{
-            name: 'Online Customers',
-            data: [40,70,20,90,36,80,30,91,60]
-        }, {
-            name: 'Store Customers',
-            data: [40, 30, 70, 80, 40, 16, 40, 20, 51, 10]
-        }],
-        options: {
-            color: ['#6ab04c', '#b92959'],
+        series: [
+            {
+              name: "Khách hàng",
+              data: [10, 22, 35, 40, 57, 60, 67, 70, 80, 85, 89, 93]
+            },
+            {
+                name: "Luật sư",
+                data: [6, 9, 13, 15, 15, 12, 16, 18, 13, 17, 20, 22]
+              }
+          ],
+          options: {
             chart: {
-                background: 'transparent'
+              type: 'line',
+              //id: 'areachart-2'
             },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-            },
-            legend: {
-                position: 'top'
-            },
-            grid: {
-                show: false
-            }
+          xaxis: {
+            categories: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec"
+            ]
+          }
         }
     }
 
     return (
-        <div className={classnames("admin-page", "info-admin-page")}>
+        <div className="admin-page-container">
             <h1>Chào mừng đến với trang quản trị web luật sư</h1>
+            
             <div>
-                {/* <img src={accountInfo.avatar} alt="avatar"></img> */}
-                <div className="col-6">
+                <div className="badge-container">
+                    <Badge value={20} title="Meetings" percent={25}/>
+                    <Badge value={25} title="Traffics" percent={50}/>
+                    <Badge value={30} title="Pageviews" percent={75}/>
+                    <Badge value={35} title="Visitors" percent={50}/>
+                </div>
+                <div className="chart-container">
                     <div className="chart">
-                        {/* chart */}
+                        <h3>Lượng người dùng trong năm</h3>
                         <Chart
-                            options={themeReducer === 'theme-mode-dark' ? {
-                                ...chartOptions.options,
-                                theme: { mode: 'dark'}
-                            } : {
-                                ...chartOptions.options,
-                                theme: { mode: 'light'}
-                            }}
+                            options={chartOptions.options}
                             series={chartOptions.series}
-                            type='line'
-                            height='100%'
+                            type="line"
+                            height='300px'
                         />
                     </div>
-                </div>
-                <div className="info-admin">
-                    <div>
-                        <span>Tên</span>
-                        <span>Vinh</span>
-                    </div>
-                    <div>
-                        <span>Email</span>
-                        <span>congvinhnguyen9123@gmail.com</span>
-                    </div>
-                    <div>
-                        <span>Địa chỉ</span>
-                        <span>Không có</span>
-                    </div>
-                    <div>
-                        <span>Quốc gia</span>
-                        <span>Không có</span>
-                    </div>
-                    <div>
-                        <span>Vai trò</span>
-                        <span>Admin</span>
+                    <div className="table-admin-home">
+                        <h3>Người dùng gần đây</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Họ</th>
+                                    <th>Tên</th>
+                                </tr>
+                            </thead>
+                            {listUsers.length > 0 ?
+                                <tbody>
+                                    {listUsers.map((user, index) => {
+                                        return (
+                                            <tr key={user.id}>
+                                                <td>{user.email}</td>
+                                                <td>{user.firstName}</td>
+                                                <td>{user.lastName}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                                :
+                                <tbody>
+                                    <tr>
+                                        <td colSpan={5}>Không có người dùng</td>
+                                    </tr>
+                                </tbody>}
+                        </table>
                     </div>
                 </div>
             </div>

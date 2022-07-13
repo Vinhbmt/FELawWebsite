@@ -7,10 +7,11 @@ class ApiAction {
 
     actSetLogout() {
         Cookies.remove('token');
+        Cookies.remove('refresh-token');
         Cookies.remove('role');
         return {
             type: SET_LOGIN,
-            payload: { token: false, role: false }
+            payload: { token: null, refreshToken: null, role: null }
         }
     }
 

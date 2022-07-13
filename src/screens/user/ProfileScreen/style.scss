@@ -1,0 +1,97 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+}
+
+.padding1 {
+   display: flex;
+   background-image: url(234.jpg);
+   // background-attachment: absolute;
+   // background-position: center;
+   // background-repeat: no-repeat;
+   background-size: cover;
+   height: 500px;
+   //justify-content: center;
+   //align-items: center;
+   flex-direction: column;
+   justify-content: center;
+
+   strong {
+       margin-left: 180px;
+       font-size: 40px;
+       color: rgb(8, 2, 110);
+   }
+
+   p {
+       margin-left: 200px;
+       font-size: 20px;
+       margin-top: 50px;
+   }
+
+   span {
+       margin-left: 200px;
+       font-weight: bold;
+       color: rgb(4, 22, 136);
+   }
+}
+
+.header-profile {
+    background-color: darken(#398B93, 5%);
+    color: white;
+    font-size: 1.5em;
+    padding: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+ }
+ 
+ 
+ .table-users {
+    border: 1px solid darken(#398B93, 5%);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+    max-width: calc(100% - 2em);
+    margin: 1em auto;
+    overflow: hidden;
+    width: 800px;
+ 
+      table {
+            width: 100%;
+      
+            td,
+            th {
+               color: darken(#398B93, 10%);
+               padding: 10px;
+            }
+      
+            td {
+               text-align: center;
+               vertical-align: middle;
+      
+               &:last-child {
+                  font-size: 0.95em;
+                  line-height: 1.4;
+                  text-align: left;
+               }
+            }
+      
+            th {
+               background-color: lighten(#398B93, 50%);
+               font-weight: 300;
+            }
+      
+            tr {
+               &:nth-child(2n) {
+                  background-color: white;
+               }
+      
+               &:nth-child(2n+1) {
+                  background-color: lighten(#398B93, 55%)
+               }
+            }
+         }
+}
+
+ .title-table {
+    text-align: center;
+ }

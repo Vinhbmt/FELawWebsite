@@ -1,0 +1,199 @@
+html {
+    scroll-behavior: smooth;
+  }
+
+.padding {
+    display: flex;
+    background-image: url(court.jpg);
+    // background-attachment: absolute;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+    //justify-content: center;
+    //align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    strong {
+        margin-left: 180px;
+        font-size: 40px;
+        color: rgb(8, 2, 110);
+    }
+
+    p {
+        margin-left: 200px;
+        font-size: 20px;
+        margin-top: 50px;
+    }
+
+    span {
+        margin-left: 200px;
+        font-weight: bold;
+        color: rgb(4, 22, 136);
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    //background-color: rgba(0, 0, 0, 0.3)
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 350px;
+    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    margin-right: 10px;
+    height: 780px;
+}
+
+.image-detail-info {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(201, 199, 199);
+
+    .image {
+
+        img{
+            max-width: 120px;
+            max-height: 120px;
+        }
+    }
+}
+
+// .image {
+//     width: 30px;
+//     height: 40px;
+// }
+
+.detail-info {
+    display: block;
+    margin-left: 20px;
+}
+
+.lawyer-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.rating {
+    margin-bottom: 10px;
+}
+
+.rate-score {
+    margin-bottom: 10px;
+}
+
+.address {
+    margin-bottom: 10px;
+}
+
+.certi {
+    margin-bottom: 20px;
+
+    h4 {
+        text-align: center;
+    }
+
+    button {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        border: none;
+        padding-left: 60px;
+    }
+
+    .degImage {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.IDImage {
+    max-width: 200px;
+    min-height: 100px;
+}
+
+.DEGImage {
+    max-width: 200px;
+    min-height: 100px;
+}
+
+.phone-num {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(201, 199, 199);
+
+}
+
+.booking {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+
+}
+
+.descrip-container {
+    display: block;
+    width: 750px;
+    border-radius: 5px;
+    margin-left: 10px;
+
+    section {
+        background-color: rgb(238, 238, 238);
+        border-radius: 5px;
+        padding: 10px 10px 10px 10px;
+        margin-bottom: 10px;
+    }
+
+}
+
+.descrip-choice {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    a {
+        width: 25%;
+        text-align: center;
+        color: black;
+    }
+}
+
+.choose-time {
+    margin-top: 20px;
+    div {
+        flex-direction: row;
+
+        button {
+            margin-left: 5px;
+            margin-right: 5px;
+            border: 0.5px solid #727678;
+            background-color: rgb(244, 243, 243);
+        }
+
+        button:hover {
+            margin-left: 5px;
+            margin-right: 5px;
+            border: 0.5px solid #0b2f3b;
+            background-color: azure;
+        }
+
+        button:focus {
+            border: 2px solid #0b2f3b;
+            background-color: rgb(150, 232, 240);
+        }
+    }
+}

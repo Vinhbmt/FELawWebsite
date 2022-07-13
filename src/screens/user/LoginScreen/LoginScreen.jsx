@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useTitle } from "../../../core/customHook";
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
@@ -9,6 +9,10 @@ import classnames from 'classnames';
 import './style.scss';
 import AuthAction from "../../../redux/actions/AuthAction";
 import { useEffect } from "react";
+import {toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Toast } from "react-bootstrap";
+
 
 const LoginScreen = () => {
     useTitle("Đăng nhập");
@@ -34,37 +38,41 @@ const LoginScreen = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({resolver: yupResolver(validateLoginSchema)});
 
     const onSubmitLogin = async (data) => {
-        const response = await dispatch(await AuthAction.asyncLogin({...data}));
-        if(response.status === 200) {
+        try {
+            const response = await dispatch(await AuthAction.asyncLogin({...data}));
+            if(response.status === 200) {
             await dispatch(await AuthAction.asyncGetAccountInfo());
             navigate('/');
-        }
+            toast.success("Đăng nhập thành công !");
+            }
+        } catch (error) {
+            toast.error("Tài khoản hoặc mật khẩu không đúng !");       
+        }       
         reset();
     }
 
     return(
-        <div className="user-page login-user-page">
-            <div className='login-content'>
-                <div className='login-title mg-tb-20'>
-                    <h3 className="title-format">Đăng nhập</h3>
+        <div className='center4'>
+            <h1>Đăng nhập</h1>
+            <form onSubmit={handleSubmit(onSubmitLogin)}>
+                <div className="txt_field">
+                    <input {...register('email')} type="text" className={classnames("width-300", `${errors.email ? "border border-danger" : ""}`)} id="email" placeholder="Email" />
+                    <p className="text-danger">{errors.email?.message}</p>
+                    <span></span>
+                    <label><i class='fas fa-id-card'></i>Email</label>
                 </div>
-                <form onSubmit={handleSubmit(onSubmitLogin)} className='login-form'>
-                    <div>
-                        <label className={classnames("d-block mg-tb-10")} htmlFor="email">Email</label>
-                        <input {...register('email')} type="text" className={classnames("width-250", `${errors.email ? "border border-danger" : ""}`)} id="email" placeholder="email"/>
-                        <p className="text-danger">{errors.email?.message}</p>
-                    </div>
-                    <div>
-                        <label className={classnames("d-block mg-tb-10")} htmlFor="password">Mật khẩu</label>
-                        <input {...register('password')} type="password" className={classnames("width-250", `${errors.password ? "border border-danger" : ""}`)} id="password" placeholder="Password"/>
-                        <p className="text-danger">{errors.password?.message}</p>
-                    </div>
-                    <div className="mg-t-20" style={{"textAlign": "center"}}>
-                        <button className={classnames("width-300 btn-custom")} disabled={isSubmitting} type="submit">Đăng nhập</button>
-                    </div>
-                </form>
-                <div className="navigate-register" onClick={() => navigate('/register')}>Tạo tài khoản mới!</div>
-            </div>
+                <div className="txt_field">
+                    <input {...register('password')} type="password" className={classnames("width-300", `${errors.password ? "border border-danger" : ""}`)} id="password" placeholder="Password" />
+                    <p className="text-danger">{errors.password?.message}</p>
+                    <span></span>
+                    <label><i class='fas fa-lock'></i>Password</label>
+                </div>
+                <input type="submit" value="Login" />
+                <div class="signup_link">
+                    Don't have an account?
+                    <Link className="nav-link" to="/register">Sign up</Link>
+                </div>
+            </form>
         </div>
     )
 }

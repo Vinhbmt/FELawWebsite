@@ -1,44 +1,61 @@
-
-.info-admin-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 100px;
+.admin-page-container {
+    margin-left: 300px;
+    text-align: center;
 
     h1 {
-        font-size: 40px;
-        margin-bottom: 40px;
-        margin-left: 40px;
+        margin-bottom: 50px;
     }
 
-    >div {
+    .badge-container {
         display: flex;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 50px;
     }
 
-    img {
-        width: 200px;
-        margin-right: 40px;
-    }
+    .chart-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
 
-    .info-admin {
-        div {
-            span {
-                font-size: 20px;
-                color: #094c72;
-                padding: 5px;
-            }
-
-            span:first-child {
-                width: 100px;
-                display: inline-block;
-                font-weight: 500;
+        .chart {
+            width: 500px;
+            display: block;
+            background-color: rgba(162, 216, 245, 0.2);
+            padding-top: 20px;
+            border-radius: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 20px;
+            box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+    
+            h3 {
+                font-weight: bold;
+                margin-bottom: 10px;
+                margin-left: 10px;
             }
         }
-    }
 
-    .chart {
-        width: 500px;
+        .table-admin-home {
+            width: 500px;
+            display: block;
+            background-color: rgba(162, 216, 245, 0.2);
+            padding-top: 20px;
+            border-radius: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 20px;
+            box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+            h3 {
+                font-weight: bold;
+                margin-bottom: 10px;
+                margin-left: 10px;
+            }
+
+        }
+
     }
 }
 
+
+        

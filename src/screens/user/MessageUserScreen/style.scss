@@ -1,0 +1,103 @@
+// .message-screen {
+//     display: flex;
+//     flex-direction: column;
+// }
+
+.message-screen-padding {
+    height: 105px;
+    background-color: rgb(234, 232, 232);
+    border-bottom: solid 4px #0a8bb6;
+}
+
+.message-screen-container {
+    display: flex;
+    flex-direction: row;
+    height: 600px;
+
+    .message-screen-sidebar {
+        width: 350px;
+        border-right: solid 1px rgba(0,0,0,0.2);
+        height: 100%;
+
+        .online-user {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            border-bottom: solid 1px rgba(0,0,0,0.2);
+            height: 80px;
+
+            h3 {
+                margin-top: 4px;
+                margin-right: 3px;
+            }
+
+            img {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    }
+
+    .message-screen-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .message-navbar {
+            display: flex;
+            flex-direction: row;
+            border-bottom: solid 1px rgba(0,0,0,0.2);
+            height: 80px;
+            width: 1200px;
+            justify-content: space-between;
+            align-items: center;
+
+            .chat-username {
+                margin-left: 20px;
+            }
+
+            .video-call {
+                margin-right: 20px;
+            }
+        }
+
+        .conversation {
+            display: flex;
+            // justify-content: space-between;
+            // flex-direction: row;
+
+            .guest {
+                color: green;
+                
+            }
+
+            .me {
+                color: red;
+                align-items: flex-end;
+            }
+        }
+
+        .input-chat {
+            display: flex;
+            margin-bottom: 10px;
+            margin-left: 50px;
+
+            input {
+                width: 1000px;
+                height: 40px;
+                border-radius: 10px;
+                background-color: rgba(205, 205, 205, 0.1);
+            }
+
+            button {
+                border-radius: 10px;
+                margin-left: 40px;
+                width: 80px;
+                background-color: #a5cbf6;
+                color: #273a40;
+                font-weight: bold;
+            }
+        }
+    }
+}

@@ -9,6 +9,10 @@ import classnames from 'classnames';
 import './style.scss';
 import AuthAction from "../../../redux/actions/AuthAction";
 import { useEffect } from "react";
+import { toast } from 'react-toastify';
+
+
+import { useState } from "react";
 
 const LoginScreen = () => {
     useTitle("Đăng nhập");
@@ -16,7 +20,7 @@ const LoginScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { authState: { token } }  = useSelector(state => {
+    const { authState: {accountInfo, token } }  = useSelector(state => {
         return { authState: state.authState };
     })
 
@@ -34,16 +38,22 @@ const LoginScreen = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({resolver: yupResolver(validateLoginSchema)});
 
     const onSubmitLogin = async (data) => {
-        const response = await dispatch(await AuthAction.asyncLogin({...data}));
-        if(response.status === 200) {
-            await dispatch(await AuthAction.asyncGetAccountInfo());
-            navigate('/');
+        try {
+            const response = await dispatch(await AuthAction.asyncLogin({...data}));
+            if(response.status === 200) {
+                await dispatch(await AuthAction.asyncGetAccountInfo());
+                navigate('/lawyer');
+                toast.success("Đăng nhập thành công !");
+            }
+        } catch (error) {
+            toast.error("Tài khoản hoặc mật khẩu không đúng !");       
         }
-        reset();
+                   
     }
+    
 
     return(
-        <div className='center1'>
+        <div className='center3'>
             <h1>Đăng nhập</h1>
             <form onSubmit={handleSubmit(onSubmitLogin)}>
                 <div className="txt_field">

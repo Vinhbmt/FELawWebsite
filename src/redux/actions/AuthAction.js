@@ -12,7 +12,7 @@ class AuthAction extends ApiAction {
         }
     }
 
-    actLogout() {
+    asyncLogout() {
         return (dispatch) => {
             dispatch(this.actSetLogout());
             dispatch(this.actSetAccountInfo(null));
@@ -28,8 +28,14 @@ class AuthAction extends ApiAction {
                 data: payload
             });
             if(response.status === 200) {
-                Cookies.set('token', response.data.accessToken, { expires: 2 });
-                Cookies.set('role', response.data.role, { expires: 2 });
+                Cookies.set('token', response.data.accessToken);
+                Cookies.set('refresh-token', response.data.refreshToken);
+                const response1 = await axios({
+                    method: 'get',
+                    url: 'http://localhost:4000/api/v1/authentication',
+                    headers: {Authorization: `Bearer ${response.data.accessToken}`}
+                });
+                Cookies.set('role', response1.data.role, { expires: 2 });
                 dispatch(this.actSetLogin({ ...response.data}));
             }
             return response;
@@ -57,20 +63,45 @@ class AuthAction extends ApiAction {
 
     async asyncGetAccountInfo() {
         return async (dispatch, getState) => {
-            const { authState: { token } } = getState();
-            const response = await axios({
-                method: 'get',
-                url: 'http://localhost:4000/api/v1/authentication',
-                headers: {Authorization: `Bearer ${token}`}, 
-            });
-            if( response.status === 401) {
-                dispatch(this.actSetLogout());
-                return false;
+            const { authState: { token, refreshToken } } = getState();
+            let response;
+            try {
+                response = await axios({
+                    method: 'get',
+                    url: 'http://localhost:4000/api/v1/authentication',
+                    headers: {Authorization: `Bearer ${token}`}, 
+                });
+                console.log(response);
+                
+                if(response.status === 200) {
+                    dispatch(this.actSetAccountInfo(response.data));
+                    return true;
+                }
             }
-            if(response.status === 200) {
-                console.log(response.data);
-                dispatch(this.actSetAccountInfo(response.data));
-                return true;
+            catch(error) {
+                // if( response.status === 401) {
+                    try {
+                        const response1 = await axios({
+                            method: 'post',
+                            url: 'http://localhost:4000/api/v1/authentication/refresh-token',
+                            data:  {refreshToken},
+                        });
+                        if(response1.status == 201){
+                            Cookies.set('token', response1.data.accessToken);
+                            response = await axios({
+                                method: 'get',
+                                url: 'http://localhost:4000/api/v1/authentication',
+                                headers: {Authorization: `Bearer ${response1.data.accessToken}`}, 
+                            });
+                            dispatch(this.actSetAccountInfo(response.data));
+                            return true;
+                        }
+                    } catch (error) {
+                        alert("Token của bạn đã hết hạn");
+                        dispatch(this.actSetLogout);
+                        return false;
+                    }
+                
             }
         }
     }
