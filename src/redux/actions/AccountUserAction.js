@@ -75,6 +75,22 @@ class AccountUserAction extends ApiAction {
         }
     }
 
+    async asyncPostMessage(data) {
+        return async (dispatch, getState) => {
+            const { authState: { token } } = getState()
+            const response = await axios({
+                method: 'post',
+                url: `http://localhost:4000/api/v1/chat/create-message`,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type':'application/json'
+                },
+                data: data
+            });
+            return response;
+        }
+    }
+
 
 }
 

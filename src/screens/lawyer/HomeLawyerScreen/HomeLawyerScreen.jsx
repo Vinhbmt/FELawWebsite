@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import AuthAction from "../../../redux/actions/AuthAction";
+import AccountUserAction from "../../../redux/actions/AccountUserAction";
 import { useDispatch, useSelector } from "react-redux";
 import { UserStatus } from "../../../redux/constants";
-import { BellOutlined } from "@ant-design/icons"
+import { BellOutlined, ConsoleSqlOutlined } from "@ant-design/icons"
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
@@ -21,16 +22,17 @@ const HomeLawyerScreen = () => {
     const [notifications, setNotifications] = useState([]);
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState("");
-
+    
     const socket = useContext(SocketContext);
 
     useEffect(() => {
-        socket.on("notification", showNoti)
+        socket.on("notification", showNoti);
     }, [])
 
     const showNoti = () => {
-        console.log("ra di pls");
+        alert("Xác nhận luật sư thành công");
     }
+
 
     const asyncGetAccountInfo = async () => {
         const response = await dispatch(await AuthAction.asyncGetAccountInfo());

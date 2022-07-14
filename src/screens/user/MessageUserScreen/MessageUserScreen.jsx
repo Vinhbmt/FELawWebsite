@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import "./style.scss"
 import { SocketContext } from "../../../core/config/socket.config";
 import { useState } from "react";
@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import useSelection from "antd/lib/table/hooks/useSelection";
 import AuthAction from "../../../redux/actions/AuthAction";
+import Message from "../../../components/Message/Message";
+import axios from "axios";
 
 const MessageUserScreen = () => {
     const socket = useContext(SocketContext);
@@ -21,6 +23,8 @@ const MessageUserScreen = () => {
         return { authState: state.authState };
     })
 
+    const scrollRef = useRef();
+
     const asyncGetAccountInfo = async () => {
         const response = await dispatch(await AuthAction.asyncGetAccountInfo());
     }
@@ -28,16 +32,7 @@ const MessageUserScreen = () => {
     useEffect(() => {
         asyncGetAccountInfo();
     }, [])
-
-    console.log(accountInfo)
-
-    const sow = () => {
-        alert("ddcm");
-    }
-
-    socket.on("message",sow);
-
-    
+   
     const getConversation = async () => {
         const response = await dispatch(await AccountUserAction.asyncGetConversation(param.lawyerId));
         console.log(response);
@@ -51,13 +46,36 @@ const MessageUserScreen = () => {
         getConversation();
     }, [])
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async (e) => {
+        e.preventDefault();
+        const message = {
+        content: newMessage,
+        conversationId: conversation,
+        };
+
         socket.emit("message", {
             conversationId: conversation,
-            senderId:accountInfo.id,
+            senderId:accountInfo._id,
             content: newMessage
         })
-    }
+
+
+
+        try {
+            const res = await dispatch(await AccountUserAction.asyncPostMessage(message))
+            if(res.status == 201) {
+                setMessages([...messages, res.data.content]);
+                setNewMessage("");
+            }           
+          } catch (err) {
+            console.log(err);
+          }
+    };
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, [messages]);
+    
     
 
     return(
@@ -105,12 +123,14 @@ const MessageUserScreen = () => {
                     <div className="conversation">
                         {messages.map((m) => {
                             return (
-                                <div className={m.senderId == param.lawyerId ? "guest" : "me"}>{m.content}</div>
+                                <div ref={scrollRef}>
+                                    <Message message={m} own={m.senderId === accountInfo._id} />
+                                </div>
                             )
                         })}
                     </div>
                     <div className="input-chat">
-                        <input placeholder="Type something" onChange={(e) => setNewMessage(e.target.value)} />
+                        <input placeholder="Type something" onChange={(e) => setNewMessage(e.target.value)} value={newMessage}/>
                         <button onClick={handleSendMessage}>Send</button>
                     </div>
                 </div>
