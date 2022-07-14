@@ -116,6 +116,11 @@ const MessageUserScreen = () => {
       console.log(err);
     }
   };
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage(event);
+    }
+  };
 
   return (
     <div className="message-screen">
@@ -157,6 +162,7 @@ const MessageUserScreen = () => {
               placeholder="Type something"
               onChange={(e) => setNewMessage(e.target.value)}
               value={newMessage}
+              onKeyDown={handleKeyDown}
             />
             <button onClick={handleSendMessage}>Send</button>
           </div>

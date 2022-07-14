@@ -132,7 +132,11 @@ const MessageLawyerScreen = () => {
   //         setCurrentMessage("");
   //     }
   // };
-
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage(event);
+    }
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -177,6 +181,7 @@ const MessageLawyerScreen = () => {
               placeholder="Type something"
               onChange={(e) => setNewMessage(e.target.value)}
               value={newMessage}
+              onKeyDown={handleKeyDown}
             />
             <button onClick={handleSendMessage}>Send</button>
           </div>
