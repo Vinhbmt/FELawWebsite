@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import './style.scss';
-import Chart from 'react-apexcharts'
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import AuthAction from "../../../redux/actions/AuthAction";
@@ -93,12 +92,7 @@ const HomeAdminScreen = () => {
                 <div className="chart-container">
                     <div className="chart">
                         <h3>Lượng người dùng trong năm</h3>
-                        <Chart
-                            options={chartOptions.options}
-                            series={chartOptions.series}
-                            type="line"
-                            height='300px'
-                        />
+                        
                     </div>
                     <div className="table-admin-home">
                         <h3>Người dùng gần đây</h3>

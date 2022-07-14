@@ -29,6 +29,9 @@ const HomeLawyerScreen = () => {
         socket.on("notification", showNoti);
     }, [])
 
+    const sow = () => {
+        alert("ddcm");
+    }
     const showNoti = () => {
         alert("Xác nhận luật sư thành công");
     }
