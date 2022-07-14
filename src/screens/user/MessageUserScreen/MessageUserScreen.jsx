@@ -48,30 +48,34 @@ const MessageUserScreen = () => {
     }
   };
 
-  useEffect( async () => {
+  useEffect(async () => {
     await getConversation();
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-    const getListConversation = async () => {
-        const response = await dispatch(await AccountUserAction.asyncGetListConversation());
-        console.log(response);
-        if (response.status == 200) {
-            setListConversation(response.data);
-        }
+  const getListConversation = async () => {
+    const response = await dispatch(
+      await AccountUserAction.asyncGetListConversation()
+    );
+    console.log(response);
+    if (response.status == 200) {
+      setListConversation(response.data);
     }
+  };
 
-    useEffect(() => {
-        getListConversation();
-    }, [])
+  useEffect(() => {
+    getListConversation();
+  }, []);
 
-    const handleOpenConver = async (id) => {
-        const response = await dispatch(await AccountUserAction.asyncGetConversation(id));
-        if(response.status == 200){
-            setMessages(response.data.listMessages);
-            setConversation(response.data.conversationId);
-        }
+  const handleOpenConver = async (id) => {
+    const response = await dispatch(
+      await AccountUserAction.asyncGetConversation(id)
+    );
+    if (response.status == 200) {
+      setMessages(response.data.listMessages);
+      setConversation(response.data.conversationId);
     }
+  };
 
   socket.on("message", (data) => {
     console.log("receiver message", data);
@@ -112,27 +116,27 @@ const MessageUserScreen = () => {
       console.log(err);
     }
   };
-  console.log(accountInfo._id);
-  
 
   return (
     <div className="message-screen">
       <div className="message-screen-padding"></div>
       <div className="message-screen-container">
-            <div className="message-screen-sidebar">
-                <div className="online-user">
-                      <h3>Online User</h3>
-                      <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
-                  </div>
-                  <div className="list-online-user">
-                      {listConversation.map((c) => {
-                          return (
-                              <div onClick={() => handleOpenConver(c.receiverId)}>{c.conversationId} </div>
-                          )
-                      })}
-                  </div>
-              </div>
-              <div className="message-screen-content">
+        <div className="message-screen-sidebar">
+          <div className="online-user">
+            <h3>Online User</h3>
+            <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
+          </div>
+          <div className="list-online-user">
+            {listConversation.map((c) => {
+              return (
+                <div onClick={() => handleOpenConver(c.receiver._id)}>
+                  {c.receiver.firstName + " " + c.receiver.lastName}{" "}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="message-screen-content">
           <div className="message-navbar">
             <div className="chat-username">Vinh</div>
             <div className="video-call">
