@@ -15,6 +15,7 @@ const MessageLawyerScreen = () => {
     const [receiverId, setReceiverId] = useState("");
     const [conversation, setConversation] = useState(null);
     const [newMessage, setNewMessage] = useState("");
+    const [listConversation, setListConversation] = useState([]);
     const { authState: { accountInfo, token } } = useSelector(state => {
         return { authState: state.authState };
     })
@@ -28,28 +29,89 @@ const MessageLawyerScreen = () => {
     useEffect(() => {
         asyncGetAccountInfo();
     }, [])
+    console.log(accountInfo)
+
+    // useEffect(() => {
+    //     socket.on("message", (data) => {
+    //         //console.log(data);
+    //         setReceiverId(data.senderId);
+    //     });
+    // }, [])
+
+    // console.log(receiverId);
+
+    // const getConversation = async () => {
+    //     const response = await dispatch(await AccountUserAction.asyncGetConversation(receiverId));
+    //     if(response.status == 200){
+    //         setMessageList(response.data.listMessages);
+    //         setConversation(response.data.conversationId);
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     getConversation();
+    // }, [])
+
+    const getListConversation = async () => {
+        const response = await dispatch(await AccountUserAction.asyncGetListConversation());
+        console.log(response);
+        if(response.status == 200){
+            setListConversation(response.data);
+        }
+    }
 
     useEffect(() => {
-        socket.on("message", (data) => {
-            //console.log(data);
-            setReceiverId(data.senderId);
-        });
+        getListConversation();
     }, [])
 
-    console.log(receiverId);
-
-    const getConversation = async () => {
-        const response = await dispatch(await AccountUserAction.asyncGetConversation(receiverId));
-        console.log(response);
+    const handleOpenConver = async (id) => {
+        const response = await dispatch(await AccountUserAction.asyncGetConversation(id));
         if(response.status == 200){
             setMessageList(response.data.listMessages);
             setConversation(response.data.conversationId);
         }
     }
 
-    useEffect(() => {
-        getConversation();
-    }, [])
+
+    socket.on("message", (data) => {
+        console.log("receiver message", data);
+        setMessageList([...messageList, data]);
+      });
+      //   useEffect(() => {}, []);
+    
+      const handleSendMessage = async (e) => {
+        e.preventDefault();
+        const message = {
+          content: newMessage,
+          conversationId: conversation,
+        };
+    
+        try {
+          const res = await dispatch(
+            await AccountUserAction.asyncPostMessage(message)
+          );
+          if (res.status == 201) {
+            console.log(res);
+    
+            setMessageList([
+              ...messageList,
+              {
+                conversationId: conversation,
+                senderId: accountInfo._id,
+                content: newMessage,
+              },
+            ]);
+            setNewMessage("");
+            socket.emit("message", {
+              conversationId: conversation,
+              senderId: accountInfo._id,
+              content: newMessage,
+            });
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
     // const sendMessage = async () => {
     //     if (currentMessage !== "") {
@@ -88,29 +150,11 @@ const MessageLawyerScreen = () => {
                         <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png"/>
                     </div>
                     <div className="list-online-user1">
-                        <ul>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                            <li>
-                                Vinh
-                            </li>
-                        </ul>
+                        {listConversation.map((c) => {
+                            return (
+                                <div onClick={() => handleOpenConver(c.receiverId)}>{c.conversationId} </div>
+                            )
+                        })}
                     </div>
                 </div>
                 <div className="message-screen-content1">
@@ -124,14 +168,14 @@ const MessageLawyerScreen = () => {
                         {messageList.map((m) => {
                             return (
                                 <div ref={scrollRef}>
-                                    <Message message={m} own={m.senderId === accountInfo._id} />
+                                    <Message message={m} own={m.senderId === accountInfo.id} />
                                 </div>
                             )
                         })}
                     </div>
                     <div className="input-chat1">
                         <input placeholder="Type something" onChange={(e) => setNewMessage(e.target.value)} value={newMessage}/>
-                        <button >Send</button>
+                        <button onClick={handleSendMessage}>Send</button>
                     </div>
                 </div>
             </div>

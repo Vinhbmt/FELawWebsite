@@ -75,6 +75,20 @@ class AccountUserAction extends ApiAction {
         }
     }
 
+    async asyncGetListConversation() {
+        return async (dispatch, getState) => {
+            const { authState: { token } } = getState()
+            const response = await axios({
+                method: 'get',
+                url: `http://localhost:4000/api/v1/chat/list-conversation`,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            return response;
+        }
+    }
+
     async asyncPostMessage(data) {
         return async (dispatch, getState) => {
             const { authState: { token } } = getState()
