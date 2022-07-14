@@ -51,12 +51,11 @@ const MessageUserScreen = () => {
     getConversation();
   }, []);
 
-  useEffect(() => {
-    socket.on("message", (data) => {
-      console.log("receiver message", data);
-      setMessages([...messages, data]);
-    });
-  }, []);
+  socket.on("message", (data) => {
+    console.log("receiver message", data);
+    setMessages([...messages, data]);
+  });
+  //   useEffect(() => {}, []);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -72,7 +71,14 @@ const MessageUserScreen = () => {
       if (res.status == 201) {
         console.log(res);
 
-        setMessages([...messages, res.data]);
+        setMessages([
+          ...messages,
+          {
+            conversationId: conversation,
+            senderId: accountInfo._id,
+            content: newMessage,
+          },
+        ]);
         setNewMessage("");
         socket.emit("message", {
           conversationId: conversation,
@@ -84,10 +90,10 @@ const MessageUserScreen = () => {
       console.log(err);
     }
   };
-  console.log(messages);
+  console.log(accountInfo._id);
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, []);
 
   return (
     <div className="message-screen">
