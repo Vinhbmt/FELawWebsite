@@ -61,7 +61,7 @@ class AuthAction extends ApiAction {
         }
     }
 
-    async asyncGetAccountInfo() {
+    async asyncGetAccountInfo(role) {
         return async (dispatch, getState) => {
             const { authState: { token, refreshToken } } = getState();
             let response;
@@ -72,7 +72,11 @@ class AuthAction extends ApiAction {
                     headers: {Authorization: `Bearer ${token}`}, 
                 });
                 console.log(response);
-                
+                console.log(response.data.role);
+                console.log(role);
+                if(response.data?.role !== role || response.status === 401) {
+                    return false;
+                }
                 if(response.status === 200) {
                     dispatch(this.actSetAccountInfo(response.data));
                     return true;
@@ -97,7 +101,7 @@ class AuthAction extends ApiAction {
                             return true;
                         }
                     } catch (error) {
-                        alert("Token của bạn đã hết hạn");
+                        //alert("Token của bạn đã hết hạn");
                         dispatch(this.actSetLogout);
                         return false;
                     }

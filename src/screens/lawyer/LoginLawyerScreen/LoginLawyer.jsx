@@ -10,9 +10,11 @@ import './style.scss';
 import AuthAction from "../../../redux/actions/AuthAction";
 import { useEffect } from "react";
 import { toast } from 'react-toastify';
-
+import { SocketContext } from "../../../core/config/socket.config";
+import { connectSocket } from "../../../core/config/socket.config";
 
 import { useState } from "react";
+import { useContext } from "react";
 
 const LoginScreen = () => {
     useTitle("Đăng nhập");
@@ -24,6 +26,7 @@ const LoginScreen = () => {
         return { authState: state.authState };
     })
 
+    const {socket, setSocket} = useContext(SocketContext);
     // useEffect(() => {
     //     if(token) navigate('/');
     // }, [])
@@ -40,10 +43,18 @@ const LoginScreen = () => {
     const onSubmitLogin = async (data) => {
         try {
             const response = await dispatch(await AuthAction.asyncLogin({...data}));
-            if(response.status === 200) {
-                await dispatch(await AuthAction.asyncGetAccountInfo());
-                navigate('/lawyer');
-                toast.success("Đăng nhập thành công !");
+            if(response.status === 200) {   
+                console.log(response);        
+                const response1 = await dispatch(await AuthAction.asyncGetAccountInfo("lawyer"));
+                if(response1) {
+                    console.log(response1)
+                    navigate('/lawyer');
+                    toast.success("Đăng nhập thành công !");
+                    setSocket(connectSocket(response.data.accessToken));
+                } 
+                else {
+                    toast.error("Bạn không phải luật sư!")
+                }
             }
         } catch (error) {
             toast.error("Tài khoản hoặc mật khẩu không đúng !");       

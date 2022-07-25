@@ -1,6 +1,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.scss';
+import Cookies from 'js-cookie';
 import HeaderUser from './components/HeaderUser/HeaderUser';
 import HomeScreen from './screens/user/HomeScreen/HomeScreen';
 import UserServiceScreen from './screens/user/UserServiceScreen/UserServiceScreen';
@@ -24,7 +25,18 @@ import ProfileScreen from './screens/user/ProfileScreen/ProfileScreen';
 import FilterLawyer from './screens/user/FilterLawyer/FilterLawyerScreen';
 import MessageLawyerScreen from './screens/lawyer/MessageScreen/MessageScreen';
 import MessageUserScreen from './screens/user/MessageUserScreen/MessageUserScreen';
-import { socket, SocketContext } from './core/config/socket.config';
+import MeetingUserScreen from './screens/user/MeetingUserScreen/MeetingUserScreen';
+import ViewMeetingUser from './screens/user/ViewMeeting/ViewMeeting';
+import ViewAppointment from './screens/lawyer/ViewAppointment/ViewAppointment';
+import ChangePasswordUser from './screens/user/ChangePasswordUser/ChangePasswordUser';
+import ChangePasswordLawyer from './screens/lawyer/ChangePasswordLawyer/ChangePasswordLawyer';
+import UpdateInfoUser from './screens/user/UpdateInfoUser/UpdateInfoUser';
+import MessengerUserScreen from './screens/user/MessengerUserScreen/MessengerUserScreen';
+import MessengerLawyerScreen from './screens/lawyer/MessengerLawyerScreen/MessengerLawyerScreen';
+import { firstSocket, SocketContext } from './core/config/socket.config';
+import VideoCallScreen from './screens/videoCall/VideoCallScreen';
+import Peer from 'simple-peer';
+import { useRef } from 'react';
 const io = require('socket.io-client');
 
 
@@ -32,19 +44,103 @@ const io = require('socket.io-client');
 
 function App() {
 
-  // const [socket, setSocket] = useState(null)
-  // useEffect(() => {
-  //   setSocket(io.connect('localhost:4001', {
-  //     query: {
-  //       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmMzMTcwMWZlYTc3NzQxZWU0ZWM5YTIiLCJpYXQiOjE2NTY5NTUxMzgsImV4cCI6MTY1Njk1ODczOH0.OMFb9YCaGOwbwTj-KrPMhQ84Gt0LVjIoGnZHyXw9K0E'
-  //     }
-  //   }));
-  // }, [socket])
+  const [socket, setSocket] = useState(firstSocket);
+  
+
+
+  const [callAccepted, setCallAccepted] = useState(false);
+  const [callEnded, setCallEnded] = useState(false);
+  const [stream, setStream] = useState();
+  const [name, setName] = useState('');
+  const [call, setCall] = useState({});
+
+  const myVideo = useRef();
+  const userVideo = useRef();
+  const connectionRef = useRef();
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        console.log(currentStream);
+        setStream(currentStream);
+
+        myVideo.current.srcObject = currentStream;
+      });
+
+    socket.on('callUser', ({ from, name: callerName, signal }) => {
+      console.log(callerName);
+      setCall({ isReceivingCall: true, from, name: callerName, signal });
+    });
+  }, []);
+
+  const answerCall = () => {
+    setCallAccepted(true);
+
+    const peer = new Peer({ initiator: false, trickle: false, stream });
+
+    peer.on('signal', (data) => {
+      socket.emit('answerCall', { signal: data, to: call.from });
+    });
+
+    peer.on('stream', (currentStream) => {
+      userVideo.current.srcObject = currentStream;
+    });
+
+    peer.signal(call.signal);
+
+    connectionRef.current = peer;
+  };
+
+  const callUser = (receiverId, senderId) => {
+    const peer = new Peer({ initiator: true, trickle: false, stream });
+
+    peer.on('signal', (data) => {
+      console.log(data);
+      socket.emit('callUser', { userToCall: receiverId, signalData: data, from: senderId, name });
+    });
+
+    peer.on('stream', (currentStream) => {
+      userVideo.current.srcObject = currentStream;
+    });
+
+    socket.on('callAccepted', (signal) => {
+      setCallAccepted(true);
+
+      peer.signal(signal);
+    });
+
+    connectionRef.current = peer;
+  };
+
+  const leaveCall = () => {
+    setCallEnded(true);
+
+    connectionRef.current.destroy();
+
+    window.location.reload();
+  };
+
+  const value = { 
+    socket, 
+    setSocket, 
+    call,
+    callAccepted,
+    myVideo,
+    userVideo,
+    stream,
+    name,
+    setName,
+    callEnded,
+    callUser,
+    leaveCall,
+    answerCall, 
+  };
+  
   
 
   return (
     <div className="App">
-      <SocketContext.Provider value={socket}>
+      <SocketContext.Provider value={value}>
         <Suspense fallback="">
           <BrowserRouter>
             <Routes>
@@ -89,14 +185,33 @@ function App() {
                   <AppointmentScreen />
                 </>
                 } />
-                <Route path="message" element={
+                <Route path="message/:userId" element={
                 <>
                   <SideBarLawyer/>
                   <MessageLawyerScreen />
                 </>
                 } />
+                <Route path="messenger" element={
+                <>
+                  <SideBarLawyer/>
+                  <MessengerLawyerScreen />
+                </>
+                } />
+                <Route path="appointment/:meetingId" element={
+                <>
+                  <SideBarLawyer/>
+                  <ViewAppointment />
+                </>
+                } />
+                {/* <Route path="videocall/:meetingId" element={
+                <>
+                  <SideBarLawyer/>
+                  <VideoCallScreen />
+                </>
+                } /> */}
                 <Route path="login" element={<LoginLawyer/>}/>
                 <Route path="register" element={<RegisterLawyer/>}/> 
+                <Route path="change_password" element={<ChangePasswordLawyer/>}/>
                 <Route index element={<Navigate to={'home'}/>}/>          
               </Route>
               <Route path="/">
@@ -128,6 +243,20 @@ function App() {
                   {/* <FooterUser/> */}
                 </>
                 }/>
+                <Route path="change-password" element={
+                <>
+                  <HeaderUser/>
+                  <ChangePasswordUser />
+                  {/* <FooterUser/>  */}
+                </>
+                }/>
+                <Route path="update_info" element={
+                <>
+                  <HeaderUser/>
+                  <UpdateInfoUser />
+                  <FooterUser/>
+                </>
+                }/>
                 <Route path="/home/search" element={
                 <>
                   <HeaderUser/>
@@ -142,7 +271,7 @@ function App() {
                   <FooterUser/>
                 </>
                 }/>
-                <Route path="find" element={
+                <Route path="major/:majorId" element={
                 <>
                   <HeaderUser/>
                   <FilterLawyer />
@@ -156,13 +285,39 @@ function App() {
                   <FooterUser/>
                 </>
                 }/>
-                <Route path="message/:lawyerId" element={
+                <Route path="messages/:lawyerId" element={
                 <>
                   <HeaderUser/>
                   <MessageUserScreen />
                   {/* <FooterUser/> */}
                 </>
                 }/>
+                <Route path="messenger" element={
+                <>
+                  <HeaderUser/>
+                  <MessengerUserScreen />
+                  {/* <FooterUser/> */}
+                </>
+                }/>
+                <Route path="meeting" element={
+                <>
+                  <HeaderUser/>
+                  <MeetingUserScreen />
+                  <FooterUser/> 
+                </>
+                }/>
+                <Route path="meeting/:meetingId" element={
+                <>
+                  <HeaderUser/>
+                  <ViewMeetingUser />
+                  <FooterUser/>
+                </>
+                }/>
+                <Route path="videocall/:meetingId" element={
+                <>
+                  <VideoCallScreen />
+                </>
+                } />
               </Route>
             </Routes>
           </BrowserRouter>

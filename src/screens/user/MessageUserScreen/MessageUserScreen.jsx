@@ -4,7 +4,7 @@ import { SocketContext } from "../../../core/config/socket.config";
 import { useState } from "react";
 import AccountUserAction from "../../../redux/actions/AccountUserAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import useSelection from "antd/lib/table/hooks/useSelection";
 import AuthAction from "../../../redux/actions/AuthAction";
@@ -12,8 +12,9 @@ import Message from "../../../components/Message/Message";
 import axios from "axios";
 
 const MessageUserScreen = () => {
-  const socket = useContext(SocketContext);
+  const {socket} = useContext(SocketContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const param = useParams();
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState(null);
@@ -21,6 +22,7 @@ const MessageUserScreen = () => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [listConversation, setListConversation] = useState([]);
+  const [receiver, setReceiver] = useState(null);
   const {
     authState: { accountInfo },
   } = useSelector((state) => {
@@ -30,12 +32,17 @@ const MessageUserScreen = () => {
   const scrollRef = useRef();
 
   const asyncGetAccountInfo = async () => {
-    const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+    const response = await dispatch(await AuthAction.asyncGetAccountInfo("user"));
+    if(!response) {
+      navigate('/login');
+    }
   };
 
   useEffect(() => {
     asyncGetAccountInfo();
   }, []);
+
+  console.log(accountInfo);
 
   const getConversation = async () => {
     const response = await dispatch(
@@ -45,13 +52,15 @@ const MessageUserScreen = () => {
     if (response.status == 200) {
       setMessages(response.data.listMessages);
       setConversation(response.data.conversationId);
+      setReceiver(response.data.receiver);
     }
   };
 
   useEffect(async () => {
     await getConversation();
+    await getListConversation();
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [param]);
 
   const getListConversation = async () => {
     const response = await dispatch(
@@ -63,9 +72,9 @@ const MessageUserScreen = () => {
     }
   };
 
-  useEffect(() => {
-    getListConversation();
-  }, []);
+  // useEffect(() => {
+  //   getListConversation();
+  // }, []);
 
   const handleOpenConver = async (id) => {
     const response = await dispatch(
@@ -123,6 +132,7 @@ const MessageUserScreen = () => {
   };
 
   return (
+    listConversation != null &&
     <div className="message-screen">
       <div className="message-screen-padding"></div>
       <div className="message-screen-container">
@@ -134,25 +144,28 @@ const MessageUserScreen = () => {
           <div className="list-online-user">
             {listConversation.map((c) => {
               return (
-                <div onClick={() => handleOpenConver(c.receiver._id)}>
-                  {c.receiver.firstName + " " + c.receiver.lastName}{" "}
-                </div>
+                <button className="list-conver" onClick={() => navigate(`/messages/${c.receiver._id}`)}>
+                  <div>
+                    <img src={c.receiver.imgUrl} />
+                  </div>
+                  <p className="list-conver-nav">{c.receiver.firstName + " " + c.receiver.lastName}</p> 
+                </button>
+                
               );
             })}
           </div>
         </div>
         <div className="message-screen-content">
           <div className="message-navbar">
-            <div className="chat-username">Vinh</div>
-            <div className="video-call">
-              <i class="fas fa-video"></i>
-            </div>
+            <div className="chat-username"><strong>{receiver?.firstName + " " + receiver?.lastName}</strong></div>
+            
           </div>
           <div className="conversation">
-            {messages.map((m) => {
+            { messages &&
+            messages.map((m) => {
               return (
                 <div ref={scrollRef}>
-                  <Message message={m} own={m.senderId === accountInfo._id} />
+                  <Message message={m} receiver={receiver} info={accountInfo} own={m.senderId === accountInfo._id} />
                 </div>
               );
             })}
@@ -169,6 +182,7 @@ const MessageUserScreen = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

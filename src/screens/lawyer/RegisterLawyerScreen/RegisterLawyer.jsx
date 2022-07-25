@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useTitle } from "../../../core/customHook";
 import * as yup from 'yup';
@@ -30,6 +31,9 @@ const RegisterLawyer = () => {
     const [yearExperiences, setYearExperiences] = useState("");
     const [idImage, setIdImage] = useState("");
     const [degImage, setDegImage] = useState("");
+    const [province, setProvince] = useState([]);
+    const [address, setAddress] = useState("");
+
 
 
     const [previewID, setPreviewID] = useState("https://via.placeholder.com/100x100.png?text=PREVIEW")
@@ -55,7 +59,19 @@ const RegisterLawyer = () => {
     // use hook form 
     console.log(majorFieldsCode);
     
+    const getProvince = async () => {
+        const response = await axios({
+            method: 'get',
+            url: `https://provinces.open-api.vn/api/`
+        });
+        if(response.status == 200) {
+            setProvince(response.data);
+        }
+    }
 
+    useEffect(() => {
+        getProvince();
+    }, [])
 
     const onSubmitRegister = async (e) => {
         e.preventDefault();
@@ -68,7 +84,8 @@ const RegisterLawyer = () => {
         lawyerData.append("role", "lawyer")
         for(const majorField of majorFieldsCode) {
             lawyerData.append("majorFields", majorField)
-        }       
+        }    
+        lawyerData.append("address", address)   
         lawyerData.append("description", description)
         lawyerData.append("yearExperiences", yearExperiences)
         lawyerData.append("files", idImage)
@@ -153,6 +170,19 @@ const RegisterLawyer = () => {
                                         isClearable
                                     />
                                 </div >
+                                <div className="province_lawyer">
+                                    <label><i class='fas fa-briefcase'></i>Địa chỉ</label>
+                                    <select defaultValue=" " className="province_select" onChange={(e) => setAddress(e.target.value)} placeholder="Tất cả tỉnh thành">
+                                        {/* <option defaultValue="All">Tất cả tỉnh thành</option> */}
+                                        {
+                                            province.map((p) => {
+                                                return (
+                                                    <option value={`${p.name}`}>{p.name}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                </div>
                                 <div className="txt_field">
                                     <span><i className='fas fa-clipboard mr-2'></i>Mô tả</span>
                                     {/* <label><i class='fas fa-user-alt'></i>Descriptisđsdson</label> */}

@@ -36,11 +36,17 @@ const LoginAdminScreen = () => {
 
     const onSubmitLogin = async (data) => {
         try {
-            const response = await dispatch(await AuthAction.asyncLogin({...data, role: "admin"}));
-            if(response.status === 200) {
-                await dispatch(await AuthAction.asyncGetAccountInfo());
-                navigate('/admin');
-                toast.success("Đăng nhập thành công !");
+            const response = await dispatch(await AuthAction.asyncLogin({...data, role: "admin"}));          
+            if(response.status === 200) {           
+                const response1 = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
+                if(response1) {
+                    //console.log(response1)
+                    navigate('/admin');
+                    toast.success("Đăng nhập thành công !");
+                } 
+                else {
+                    toast.error("Bạn không phải admin!")
+                }
             }
         } catch (error) {
             toast.error("Tài khoản hoặc mật khẩu không đúng !");       

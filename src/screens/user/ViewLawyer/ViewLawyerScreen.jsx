@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import lawyers from "../../../data";
 import { Modal } from 'react-bootstrap';
 import classnames from 'classnames';
@@ -15,6 +15,7 @@ import {toast} from "react-toastify"
 
 import convert from "../../../core/utils/majorConvert";
 import Fancybox from "../../../components/fancyBox/FancyBox";
+import { SocketContext } from "../../../core/config/socket.config";
 
 const ViewLawyerScreen = () => {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const ViewLawyerScreen = () => {
     const {authState: {accountInfo, token}} = useSelector (state => {
         return { authState: state.authState };
     })
+    const {socket} = useContext(SocketContext);
     const [ showBookingModal, setShowBookingModal ] = useState(false);
     const [lawyer, setLawyer] = useState({});
     const [startDate, setStartDate] = useState(new Date());
@@ -33,17 +35,17 @@ const ViewLawyerScreen = () => {
     const [avaiTime, setAvaiTime] = useState([]);
     //console.log(window.location.pathname[8]);
 
-    // const asyncGetAccountInfo = async () => {
-    //     const response = await dispatch(await AuthAction.asyncGetAccountInfo());
-    //     if (!response) {
-    //         navigate('/lawyer/login');
-    //     }
-    // }
+    const asyncGetAccountInfo = async () => {
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("user"));
+        // if (!response) {
+        //     navigate('/login');
+        // }
+    }
 
-    // useEffect(() => {
-    //     asyncGetAccountInfo();
-    // }, [])
-    //console.log(accountInfo);
+    useEffect(() => {
+        asyncGetAccountInfo();
+    }, [])
+    console.log(accountInfo);
 
 
     const handleShowBooking = () => {
@@ -81,7 +83,13 @@ const ViewLawyerScreen = () => {
 
     const bookingLawyer = async (data) => {
         const response = await dispatch(await AccountUserAction.asyncBookingLawyer(data))
+        console.log(response);
         if(response.status == 201) {
+            socket.emit("notification", {
+                userId: response.data.lawyerId,
+                content: `${accountInfo.firstName + " " + accountInfo.lastName} đã đặt lịch hẹn với bạn`,
+                url: `http://localhost:3000/lawyer/appointment/${response.data._id}`
+              });
             toast.success("Đặt lịch thành công")
             handleCloseBooking();
         }
@@ -160,12 +168,14 @@ const ViewLawyerScreen = () => {
                     <div className="phone-num">
                         <button className="btn btn-primary">{lawyer.phone}</button>
                     </div>
-                    <div className="booking">
-                        <button className="btn btn-primary" onClick={handleShowBooking}>Đặt lịch</button>  
-                        <button className="btn btn-primary" onClick={() => navigate(`/message/${lawyer.id}`)}>Nhắn tin</button>                     
-                    </div>
+                    {accountInfo !== null &&
+                        <div className="booking">                                                    
+                            <button className="btn btn-primary" onClick={handleShowBooking}>Đặt lịch</button> 
+                            <button className="btn btn-primary" onClick={() => navigate(`/messages/${lawyer.id}`)}>Nhắn tin</button>                                             
+                        </div>
+                    }
                 </div>
-                <div className="descrip-container">
+                <div className="descrip-container1">
                     <section id="info">
                         <h2>Giới thiệu về luật sư</h2>
                         <p>

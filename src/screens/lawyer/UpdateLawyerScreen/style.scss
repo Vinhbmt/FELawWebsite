@@ -27,7 +27,7 @@
             }
         }
 
-        .update-form {
+        .update-form2 {
             display: flex;
             width: 100%;
             justify-content: center;
@@ -67,6 +67,28 @@
     }
 }
 
+.update-form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+
+    .update-lawyer-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    button {
+        margin: 10px 10px 10px 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        color: #094c72;
+        background-color: white;
+    }
+}
+
 @media (max-width: 700px) {
     .update-user {
         flex-direction: column;
@@ -85,7 +107,7 @@
 }
 
 .degidimage {
-    margin: 100px;
+    //margin: 100px;
     transition: transform 0.25s ease;
     cursor: zoom-in;
 }

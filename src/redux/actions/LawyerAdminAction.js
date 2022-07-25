@@ -3,15 +3,16 @@ import axios from "axios";
 
 class LawyerAdminAction extends ApiAction {
 
-    async asyncGetLawyer(status) {
+    async asyncGetLawyer(status, data) {
         return async (dispatch, getState) => {
             const { authState: { token } } = getState()
             const response = await axios({
-                method: 'get',
+                method: 'post',
                 url: `http://localhost:4000/api/v1/users/lawyers?status=${status}`,
                 headers: {
                     Authorization: `Bearer ${token}`
-                }
+                },
+                data: data
             });
             return response;
         }

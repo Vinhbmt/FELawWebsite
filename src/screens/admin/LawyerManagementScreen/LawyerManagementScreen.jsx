@@ -10,6 +10,7 @@ import './style.scss';
 import { EyeOutlined, DeleteOutlined, CloudUploadOutlined } from "@ant-design/icons"
 import lawyers from "../../../data";
 import LawyerAdminAction from "../../../redux/actions/LawyerAdminAction";
+import AuthAction from "../../../redux/actions/AuthAction";
 import { UserStatus } from "../../../redux/constants";
 import { io } from "socket.io-client";
 import { toast } from 'react-toastify';
@@ -26,12 +27,23 @@ const LawyerManagementScreen = () => {
     const [loading, setLoading] = useState(false);
     const [ratingScore, setRatingScore] = useState(null);
     const [activeSelect, setActiveSelect] = useState("1");
-    const socket = useContext(SocketContext);
+    const {socket} = useContext(SocketContext);
   
 
+    const asyncGetAccountInfo = async () => {
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
+        if (!response) {
+            navigate('/admin/login');
+        }
+    }
+
+    useEffect(() => {
+        asyncGetAccountInfo();
+    }, [])
+
     const getListLawyer = async (select) => {
-        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(select));
-        if(response.status === 200) {
+        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(select, {}));
+        if(response.status === 201) {
             await setListLawyers(response.data);
             setLoading(false);
         }
@@ -95,7 +107,8 @@ const LawyerManagementScreen = () => {
             setShowInfoModal(false);
             setLoading(true);
             socket.emit("notification", {
-                receiverEmail: lawyer.email,
+                userId: lawyer.id,
+                content: "Tài khoản của bạn đã được xác thực"
               });
             toast.success("Xác nhận thành công !");
         }

@@ -23,22 +23,20 @@ const HomeLawyerScreen = () => {
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState("");
     
-    const socket = useContext(SocketContext);
+    const {socket, setSocket} = useContext(SocketContext);
+
 
     useEffect(() => {
         socket.on("notification", showNoti);
     }, [])
 
-    const sow = () => {
-        alert("ddcm");
-    }
     const showNoti = () => {
         alert("Xác nhận luật sư thành công");
     }
 
 
     const asyncGetAccountInfo = async () => {
-        const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("lawyer"));
         if (!response) {
             navigate('/lawyer/login');
         }
@@ -47,6 +45,13 @@ const HomeLawyerScreen = () => {
     useEffect(() => {
         asyncGetAccountInfo();
     }, [])
+
+    // console.log(accountInfo);
+    // useEffect(() => {
+    //     if(accountInfo != null){
+    //         setSocket(accountInfo?.id)
+    //     }
+    // }, [])
 
     // useEffect(() => {
     //     setUser(accountInfo.email);

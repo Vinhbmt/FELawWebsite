@@ -6,13 +6,16 @@ import AccountUserAction from "../../../redux/actions/AccountUserAction";
 import Message from "../../../components/Message/Message";
 import "./style.scss";
 import { useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MessageLawyerScreen = () => {
   const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
+  const navigate = useNavigate();
+  const params = useParams();
+  const {socket} = useContext(SocketContext);
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  const [receiverId, setReceiverId] = useState("");
+  const [receiver, setReceiver] = useState(null);
   const [conversation, setConversation] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [listConversation, setListConversation] = useState([]);
@@ -25,7 +28,10 @@ const MessageLawyerScreen = () => {
   const scrollRef = useRef();
 
   const asyncGetAccountInfo = async () => {
-    const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+    const response = await dispatch(await AuthAction.asyncGetAccountInfo("lawyer"));
+    if(!response) {
+      navigate('/lawyer/login');
+    }
   };
 
   useEffect(() => {
@@ -53,6 +59,18 @@ const MessageLawyerScreen = () => {
   //     getConversation();
   // }, [])
 
+  const getConversation = async () => {
+    const response = await dispatch(
+      await AccountUserAction.asyncGetConversation(params.userId)
+    );
+    console.log(response);
+    if (response.status == 200) {
+      setMessageList(response.data.listMessages);
+      setConversation(response.data.conversationId);
+      setReceiver(response.data.receiver);
+    }
+  };
+
   const getListConversation = async () => {
     const response = await dispatch(
       await AccountUserAction.asyncGetListConversation()
@@ -63,17 +81,21 @@ const MessageLawyerScreen = () => {
     }
   };
 
-  useEffect(() => {
-    getListConversation();
-  }, []);
+  useEffect(async () => {
+    await getConversation();
+    await getListConversation();
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [params]);
 
   const handleOpenConver = async (id) => {
     const response = await dispatch(
       await AccountUserAction.asyncGetConversation(id)
     );
+    console.log(response)
     if (response.status == 200) {
       setMessageList(response.data.listMessages);
       setConversation(response.data.conversationId);
+      setReceiver(response.data.receiver);
     }
   };
 
@@ -151,31 +173,41 @@ const MessageLawyerScreen = () => {
             <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
           </div>
           <div className="list-online-user1">
-            {listConversation.map((c) => {
+            { listConversation.length > 0 &&
+            listConversation.map((c) => {
               return (
-                <div onClick={() => handleOpenConver(c.receiver._id)}>
-                  {c.receiver.firstName + " " + c.receiver.lastName}{" "}
-                </div>
+                <button className="list-conver" onClick={() => navigate(`${c.receiver._id}`)}>
+                  {c.receiver.firstName + " " + c.receiver.lastName}
+                </button>
               );
             })}
           </div>
         </div>
         <div className="message-screen-content1">
+          {receiver ?
           <div className="message-navbar1">
-            <div className="chat-username1">Vinh</div>
+            <div className="chat-username1"><strong>{receiver.firstName + " " + receiver.lastName} </strong></div>
             <div className="video-call">
               <i class="fas fa-video"></i>
             </div>
           </div>
+          :
+          <div className="message-navbar1"></div>
+          }
+          {
+            messageList.length > 0 ?
           <div className="conversation1">
             {messageList.map((m) => {
               return (
                 <div ref={scrollRef}>
-                  <Message message={m} own={m.senderId == accountInfo.id} />
+                  <Message message={m} receiver={receiver} info={accountInfo} own={m.senderId == accountInfo.id} />
                 </div>
               );
             })}
           </div>
+          :
+          <div className="conversation2" >Chưa có tin nhắn</div>
+          }
           <div className="input-chat1">
             <input
               placeholder="Type something"

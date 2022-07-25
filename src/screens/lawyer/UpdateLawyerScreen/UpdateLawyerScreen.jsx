@@ -28,7 +28,7 @@ const UpdateLawyerScreen = () => {
     const [loading, setLoading] = useState(false);
 
     const asyncGetAccountInfo = async () => {
-        const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("lawyer"));
         if (!response) {
             navigate('/lawyer/login');
         }
@@ -144,14 +144,8 @@ const UpdateLawyerScreen = () => {
             </div>
             <div className="update-user">
                 <form onSubmit={onSubmitUpdate} className='update-form'>
-                    <div className="image-upload">
-                        <img className="avatar" src={preview != AVATAR_DEFAULT_URL ?  preview : accountInfo?.imgUrl || preview} alt="image-music"></img>
-                        <label className='file-input-label btn-custom' htmlFor="image-input">
-                            Đổi ảnh
-                        </label>
-                        <input type={"file"} id='image-input' name="image" accept='image/*' onChange={handleAvatarChange} hidden></input>
-                    </div>
-                    <div className="image-upload">
+                    
+                    {/* <div className="image-upload">
                         <div className='edit-image-source'>
                             <div className="alert alert-info image">
                                 <img src={previewID != AVATAR_DEFAULT_URL ?  previewID : accountInfo?.evidenceUrls?.length && accountInfo.evidenceUrls[0] || previewID} alt="image-music" className="img img-fluid degidimage"></img>
@@ -183,9 +177,56 @@ const UpdateLawyerScreen = () => {
                                 </label>
                             </div>
                         </div>
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div className="image-upload">
+                        <img className="avatar" src={preview != AVATAR_DEFAULT_URL ?  preview : accountInfo?.imgUrl || preview} alt="image-music"></img>
+                        <label className='file-input-label btn-custom' htmlFor="image-input">
+                            Đổi ảnh
+                        </label>
+                        <input type={"file"} id='image-input' name="image" accept='image/*' onChange={handleAvatarChange} hidden></input>
+                    </div> */}
+                    <div className="update-form2">
+                        <div className="image-upload">
+                            <div className='edit-image-source'>
+                                <div className="alert alert-info image">
+                                    <img src={previewID != AVATAR_DEFAULT_URL ?  previewID : accountInfo?.evidenceUrls?.length && accountInfo.evidenceUrls[0] || previewID} alt="image" className="img img-fluid degidimage"></img>
+                                    <label className="btn btn-outline-primary btn-light btn-block m-2">
+                                        IdImage
+                                        <input
+                                            type="file"
+                                            name="image"
+                                            onChange={handleIDImageChange}
+                                            accept="image/*"
+                                            hidden
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className='edit-image-source'>
+                                <div className="alert alert-info image">
+                                    <img src={ previewDeg != AVATAR_DEFAULT_URL ?  previewDeg : accountInfo?.evidenceUrls?.length && accountInfo.evidenceUrls[1] || previewDeg} alt="image" className="img img-fluid degidimage"></img>                                       
+                                    <label className="btn btn-outline-primary btn-light btn-block m-2">
+                                        DeImage
+                                        <input
+                                            type="file"
+                                            name="image"
+                                            onChange={handleDegImageChange}
+                                            accept="image/*"
+                                            hidden
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div>
+                            <div className="image-upload">
+                                <img className="avatar" src={preview != AVATAR_DEFAULT_URL ? preview : accountInfo?.imgUrl || preview} alt="avatar"></img>
+                                <label className='file-input-label btn-custom' htmlFor="image-input">
+                                    Đổi ảnh
+                                </label>
+                                <input type={"file"} id='image-input' name="image" accept='image/*' onChange={handleAvatarChange} hidden></input>
+                            </div>
                             <div className="txt_field">
                                 <input
                                     type="text"
@@ -235,9 +276,8 @@ const UpdateLawyerScreen = () => {
                                 <label><i class='far fa-address-book mr-2'></i>Phone</label>
                             </div>
                         </div>
-
-
-                        <div className="mg-t-20" >
+                    </div>
+                    <div className="mg-t-20 update-lawyer-btn" >
                             <button className={classnames("width-300 btn-custom")} disabled={isSubmitting} type="submit">Cập nhật thông tin</button>
                         </div>
                         {
@@ -246,7 +286,6 @@ const UpdateLawyerScreen = () => {
                                 <button className={classnames("width-300 btn-custom")} disabled={isSubmitting} type="submit">Gửi lại yêu cầu</button>
                             </div>
                         }
-                    </div>
                 </form>
             </div>
         </div>

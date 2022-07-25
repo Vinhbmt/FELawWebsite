@@ -80,6 +80,21 @@ class LawyerAction extends ApiAction {
         }
     }
 
+    async asyncUpdateAppointment(data) {
+        return async (dispatch, getState) => {
+            const { authState: { token } } = getState()
+            const response = await axios({
+                method: 'put',
+                url: `http://localhost:4000/api/v1/meetings`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: data
+            });
+            return response;
+        }
+    }
+
 }
 
 export default new LawyerAction();

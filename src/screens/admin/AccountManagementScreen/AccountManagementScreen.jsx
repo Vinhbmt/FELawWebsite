@@ -10,6 +10,7 @@ import './style.scss';
 import { EyeOutlined, DeleteOutlined, CloudUploadOutlined } from "@ant-design/icons"
 import users from "../../../data";
 import AccountAdminAction from "../../../redux/actions/AccountAdminAction";
+import AuthAction from "../../../redux/actions/AuthAction";
 import { UserStatus } from "../../../redux/constants";
 
 const AccountManagementScreen = () => {
@@ -19,6 +20,17 @@ const AccountManagementScreen = () => {
     const [loading, setLoading] = useState(false);
     const [ratingScore, setRatingScore] = useState(null);
     const [activeSelect, setActiveSelect] = useState("1");
+
+    const asyncGetAccountInfo = async () => {
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
+        if (!response) {
+            navigate('/admin/login');
+        }
+    }
+
+    useEffect(() => {
+        asyncGetAccountInfo();
+    }, [])
 
     const getListUser = async () => {
         const response = await dispatch(await AccountAdminAction.asyncGetUser());

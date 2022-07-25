@@ -145,7 +145,7 @@ html {
 
 }
 
-.descrip-container {
+.descrip-container1 {
     display: block;
     width: 750px;
     border-radius: 5px;
@@ -156,6 +156,10 @@ html {
         border-radius: 5px;
         padding: 10px 10px 10px 10px;
         margin-bottom: 10px;
+
+        h2 {
+            text-align: left;
+        }
     }
 
 }

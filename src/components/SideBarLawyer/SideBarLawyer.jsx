@@ -1,20 +1,47 @@
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import AuthAction from "../../redux/actions/AuthAction";
+import AccountUserAction from "../../redux/actions/AccountUserAction";
 import classnames from "classnames";
 import './style.scss';
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap';
+import { SocketContext } from "../../core/config/socket.config";
+import { format } from "timeago.js";
 
 const SideBarLawyer = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const [notifications, setNotifications] = useState([]);
+    const [openNoti, setOpenNoti] = useState(false);
+    const [showCounter, setShowCounter] = useState(false);
     const { authState: { accountInfo, token } } = useSelector(state => {
         return { authState: state.authState };
     })
+    const {socket} = useContext(SocketContext);
+
+    
+    const getListNotification = async () => {
+        const response = await dispatch(await AccountUserAction.asyncGetNotification());
+        if(response.status == 200) {
+            setNotifications(response.data);
+        }
+    }
+
+    useEffect(() => {
+        getListNotification();
+        socket.on("notification", (data) => {
+            console.log(data);
+            setNotifications((prev) => [data, ...prev]);
+            setShowCounter(true);
+        }); 
+    }, [socket])
+
+    
+
+    console.log(notifications);
 
     //console.log(accountInfo);
 
@@ -27,18 +54,18 @@ const SideBarLawyer = () => {
         setLogoutModal(false);
     }
 
-    // const asyncGetAccountInfo = async () => {
-    //     const response = await dispatch(await AuthAction.asyncGetAccountInfo());
-    //     if(!response) {
-    //         navigate('/lawyer/login');
-    //     }
-    // }
+    const asyncGetAccountInfo = async () => {
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("lawyer"));
+        if(!response) {
+            navigate('/lawyer/login');
+        }
+    }
 
-    // useEffect(() => {
-    //     if(token !== null && token !== undefined && token !== false) {
-    //         asyncGetAccountInfo();
-    //     }
-    // }, [])
+    useEffect(() => {
+        if(token !== null && token !== undefined && token !== false) {
+            asyncGetAccountInfo();
+        }
+    }, [])
 
     const onSubmitLogout = async () => {
         await dispatch(await AuthAction.asyncLogout());
@@ -60,18 +87,49 @@ const SideBarLawyer = () => {
                     </NavLink>
                 </li>
                 <li>
+                    <NavLink to='/lawyer/change_password'>
+                        <span>Đổi mật khẩu</span>
+                    </NavLink>
+                </li>
+                <li>
                     <NavLink to='/lawyer/appointment'>
                         <span>Cuộc hẹn</span>
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to='/lawyer/message'>
+                    <NavLink to='/lawyer/messenger'>
                         <span>Tin nhắn</span>
                     </NavLink>
                 </li>
+                <li className="notification-sidebar" onClick={() => {
+                    setOpenNoti(!openNoti);
+                    setShowCounter(false);
+                    }}>
+                    <a><span>Thông báo</span>
+                    {
+                        notifications.length > 0 && showCounter &&
+                        <span className="counter1">{notifications.length}</span>
+                    }
+                    </a>
+                </li>
+                    {openNoti && (
+                        <div className="notifications1">
+                            {notifications.map((n) => {
+                                return (
+                                    <span>
+                                        <a className="notification" href={n.url || "javascript:void(0)" } >{n.content}</a>
+                                        <div className="messageBottom1">{format(n.createdAt)}</div>
+                                    </span>
+                                )
+                            })}
+                            {/* <button className="nButton" onClick={handleRead}>
+                                Mark as read
+                            </button> */}
+                        </div>
+                    )}
                 <li onClick={handleShowLogout}>
                     <a><span>Đăng xuất</span></a>
-                </li>
+                </li>               
             </ul>
 
             <Modal show={logoutModal} enforceFocus={false} className="modal-min modal-alert">

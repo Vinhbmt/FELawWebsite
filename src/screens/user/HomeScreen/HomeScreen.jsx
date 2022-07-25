@@ -53,8 +53,9 @@ const HomeScreen = () => {
     };
 
     const getListLawyer = async () => {
-        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(2));
-        if(response.status === 200) {
+        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(2, {"majorField": "","address": ""}));
+        console.log(response);
+        if(response.status === 201) {
             await setListLawyers(response.data);
         }
     }
@@ -206,24 +207,14 @@ const HomeScreen = () => {
                     <p>Với hơn một chục luật sư và nhiều thập kỷ kinh nghiệm, kiến ​​thức của chúng tôi giúp mang lại nhiều trường hợp thắng hơn, tỷ lệ dàn xếp cao hơn và khách hàng hạnh phúc hơn. Luật sư có thể đưa ra hoặc phá vỡ một vụ việc dựa trên cách thức vụ việc được lập hồ sơ, phát triển và định vị cho các công ty bảo hiểm và bồi thẩm đoàn - chúng tôi đảm bảo rằng không có gì bị bỏ sót trong trường hợp của bạn và kết quả của chúng tôi chứng minh điều đó. Không có gì ngạc nhiên khi VLaw lọt vào danh sách 100 luật sư về chấn thương cá nhân hàng đầu trên toàn quốc vào năm 2020.</p>
                 </div>
             </div>
-            <Widget
+            {/* <Widget
                 handleNewUserMessage={handleNewUserMessage}
                 handleQuickButtonClicked={handleQuickButtonClicked}
                 profileAvatar={logo}
                 title="Văn phòng tư vấn"
                 subtitle="Bạn đang cần giúp đỡ"
                 chatId="1"
-            />
-            <div>dsfgsggds</div>
-            <Widget
-                handleNewUserMessage={handleNewUserMessage}
-                handleQuickButtonClicked={handleQuickButtonClicked}
-                profileAvatar={logo}
-                title="Văn phòng tư vấn"
-                subtitle="Bạn đang cần giúp đỡ"
-                chatId="2"
-                emojis={true}
-            />
+            /> */}
        </div>
     )
 }

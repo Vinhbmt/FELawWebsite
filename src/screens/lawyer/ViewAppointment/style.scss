@@ -1,0 +1,115 @@
+.view-appoint-container {
+    margin-left: 250px;
+    padding-top: 20px;
+}
+
+
+.processing {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.1);
+    width: 600px;
+    margin: 2rem auto;
+    height: 100px;
+    border-radius: 10px;
+    
+    .processing1 {
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-direction: column;
+       margin-left: 10px;
+       margin-right: 10px;
+ 
+       .processing0 {
+          background-color: rgba(219, 216, 216, 0.1);
+          width: 30px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 60px;
+       }
+
+       .processing2 {
+         background-color: rgb(111, 244, 111);
+         width: 30px;
+         height: 30px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         border-radius: 60px;
+      }
+    }
+    
+  }
+
+.detail-meeting-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgb(216, 246, 246);
+    width: 600px;
+    padding: 20px 20px 20px 20px;
+    margin: auto;
+    margin-bottom: 50px;
+    border-radius: 5px;
+
+    .detail-meeting-title  {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .detail-meeting {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      
+
+      .detail-meeting-image {
+         margin-right: 20px;
+         img {
+            max-width: 200px;
+            max-height: 200px;
+         }
+      }
+
+      .detail-meeting-info {
+         .detail-meeting-info1 {
+            display: flex;
+            flex-direction: row;
+
+            div {
+               font-weight: bold;
+               margin-left: 5px;
+            }
+         }
+      }
+    }
+}
+
+.meeting-lawyer-btn {
+    width: 600px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    div {
+        margin-bottom: 10px;
+    }
+
+    input {
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    // button {
+    //     border-radius: 5px;
+    //     background-color: rgb(147, 234, 234);
+    // }
+}

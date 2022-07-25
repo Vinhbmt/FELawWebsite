@@ -8,6 +8,7 @@ import AuthAction from "../../../redux/actions/AuthAction";
 import Badge from "../../../components/Badge/Badge";
 import AccountAdminAction from "../../../redux/actions/AccountAdminAction";
 
+
 const HomeAdminScreen = () => {
     const themeReducer = useSelector(state => state.ThemeReducer.mode)
     const {authState: { token}} = useSelector (state => {
@@ -22,7 +23,7 @@ const HomeAdminScreen = () => {
     })
 
     const asyncGetAccountInfo = async () => {
-        const response = await dispatch(await AuthAction.asyncGetAccountInfo());
+        const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
         if (!response) {
             navigate('/admin/login');
         }

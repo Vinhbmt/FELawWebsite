@@ -1,0 +1,73 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+}
+
+.padding2 {
+   height: 105px;
+   background-color: rgba(0,0,0,0.1);
+   border-bottom: solid 4px #0a8bb6;
+}
+
+.header-profile {
+    background-color: darken(#398B93, 5%);
+    color: white;
+    font-size: 1.5em;
+    padding: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+ }
+ 
+ 
+ .table-users {
+    border: 1px solid darken(#398B93, 5%);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+    max-width: calc(100% - 2em);
+    margin: 1em auto;
+    overflow: hidden;
+    width: 800px;
+ 
+      table {
+            width: 100%;
+      
+            td,
+            th {
+               color: darken(#398B93, 10%);
+               padding: 10px;
+               width: 150px;
+            }
+      
+            td {
+               text-align: center;
+               vertical-align: middle;
+      
+               &:last-child:hover {
+                  cursor: pointer;
+                  text-decoration: underline;
+               }
+            }
+      
+            th {
+               background-color: lighten(#398B93, 50%);
+               font-weight: 300;
+            }
+      
+            tr {
+               &:nth-child(2n) {
+                  background-color: white;
+               }
+      
+               &:nth-child(2n+1) {
+                  background-color: lighten(#398B93, 55%)
+               }
+            }
+         }
+}
+
+ .title-table {
+    text-align: center;
+ }
+
+ 
