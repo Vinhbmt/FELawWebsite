@@ -43,17 +43,24 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: true, audio: false })
       .then((currentStream) => {
         setStream(currentStream);
 
         myVideo.current.srcObject = currentStream;
       });
-
-    socket.on("callUser", ({ from, name: callerName, signal }) => {
-      setCall({ isReceivingCall: true, from, name: callerName, signal });
-    });
   }, []);
+
+  // socket.on("callUser", ({ from, name: callerName, signal, meetingId }) => {
+  //   console.log("call user");
+  //   setCall({
+  //     isReceivingCall: true,
+  //     from,
+  //     name: callerName,
+  //     signal,
+  //     meetingId,
+  //   });
+  // });
 
   console.log(call);
   return (
