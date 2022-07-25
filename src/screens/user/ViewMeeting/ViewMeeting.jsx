@@ -49,7 +49,7 @@ const ViewMeetingUser = () => {
         console.log(response);
         if(response.status == 200) {
             setMeetingInfo(response.data);
-            setName(meetingInfo.userId.lastName);
+            setName(response.data.userId.lastName);
         }
     }
 

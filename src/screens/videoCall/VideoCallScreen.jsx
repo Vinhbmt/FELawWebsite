@@ -37,27 +37,7 @@ const useStyles = makeStyles((theme) => ({
   const VideoCallScreen = () => {
       const params = useParams();
       const classes = useStyles();
-      const [stream, setStream] = useState();
-      const myVideo = useRef();
-      const userVideo = useRef();
-      const connectionRef = useRef();
-
-      useEffect(() => {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-          .then((currentStream) => {
-            console.log(currentStream);
-            setStream(currentStream);
     
-            myVideo.current.srcObject = currentStream;
-          });
-    
-        // socket.on('me', (id) => setMe(id));
-    
-        // socket.on('callUser', ({ from, name: callerName, signal }) => {
-        //   console.log(callerName);
-        //   setCall({ isReceivingCall: true, from, name: callerName, signal });
-        // });
-      }, []);
 
     return (
         <>

@@ -48,7 +48,7 @@ const ViewAppointment = () => {
         console.log(response);
         if(response.status == 200) {
             setMeetingInfo(response.data);
-            setName(meetingInfo.lawyerId.lastName);
+            setName(response.data.lawyerId.lastName);
         }
     }
 
