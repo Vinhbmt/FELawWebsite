@@ -37,11 +37,11 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then((currentStream) => {
-        setStream(currentStream);
+    // navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    //   .then((currentStream) => {
+    //     setStream(currentStream);
 
-      });
+    //   });
 
     socket.on('callUser', ({ from, name: callerName, signal, meetingId }) => {
       console.log("call user");
