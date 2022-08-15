@@ -167,16 +167,19 @@ const MessengerLawyerScreen = () => {
   return (
     <div className="message-screen1">
       <div className="message-screen-container1">
-        <div className="message-screen-sidebar1">
+        <div className="message-screen-sidebar11">
           <div className="online-user1">
             <h3>Online User</h3>
             <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
           </div>
-          <div className="list-online-user1">
+          <div className="list-online-user16">
             {listConversation.map((c) => {
               return (
-                <button className="list-conver" onClick={() => navigate(`/lawyer/message/${c.receiver._id}`)}>
-                  {c.receiver.firstName + " " + c.receiver.lastName}
+                <button className="list-conver17" onClick={() => navigate(`/lawyer/message/${c.receiver._id}`)}>
+                  <div>
+                    <img src={c.receiver.imgUrl} />
+                  </div>
+                  <p>{c.receiver.firstName + " " + c.receiver.lastName}</p>
                 </button>
               );
             })}
@@ -194,9 +197,9 @@ const MessengerLawyerScreen = () => {
           <div className="message-navbar1"></div>
           }
           <div className="conversation12">
-            Chọn 1 cuộc trò chuyện để mở
+            <strong>Chọn 1 cuộc trò chuyện để mở</strong>
           </div>
-          <div className="input-chat1">
+          {/* <div className="input-chat1">
             <input
               placeholder="Type something"
               onChange={(e) => setNewMessage(e.target.value)}
@@ -204,7 +207,7 @@ const MessengerLawyerScreen = () => {
               onKeyDown={handleKeyDown}
             />
             <button onClick={handleSendMessage}>Send</button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -37,10 +37,12 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
-    // navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    // navigator.mediaDevices
+    //   .getUserMedia({ video: true, audio: false })
     //   .then((currentStream) => {
     //     setStream(currentStream);
 
+    //     myVideo.current.srcObject = currentStream;
     //   });
 
     socket.on('callUser', ({ from, name: callerName, signal, meetingId }) => {
@@ -99,7 +101,7 @@ const ContextProvider = ({ children }) => {
     setCallEnded(true);
 
     connectionRef.current.destroy();
-
+    // stream.getTracks()[0].stop();
     window.location.reload();
   };
 

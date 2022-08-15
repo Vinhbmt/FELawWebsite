@@ -30,13 +30,15 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/stores';
 import { Provider } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { socket, SocketContext } from './core/config/socket.config';
+import { ContextProvider, socket, SocketContext } from './core/config/socket.config';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
       <Provider store={store}>
-        <App />
-        <ToastContainer />
+          <App />
+          <ToastContainer />
       </Provider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -100,13 +100,8 @@ const HomeScreen = () => {
     return (
         <div className="whole">
             <div className="background_image">
-                <div className="container_0">
+                {/* <div className="container_0">
                     <div className="container_2">
-                        {/* <div className="container_1">
-                            <h1>
-                                Cùng bạn chia sẻ mọi vấn đề về pháp luật
-                            </h1>
-                        </div> */}
                         <div className="container_3">
                             <div className="find_law">
                                 <a href="#">TÌM LUẬT SƯ</a>
@@ -146,7 +141,7 @@ const HomeScreen = () => {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="text-center">
@@ -157,9 +152,10 @@ const HomeScreen = () => {
                 <SearchBar />
             </div> */}
             <main className="grid">
-                {listLawyers.map( (lawyer) => 
+                {listLawyers.slice(0,3).map( (lawyer) => 
                     <SmallCard lawyer={lawyer} />
                 )}
+                <buttons className="seemore" onClick={() => navigate("./major")}>Xem thêm</buttons>
             </main>
             <div className="decor">
                 <div className="decor-text">

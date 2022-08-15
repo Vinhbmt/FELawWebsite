@@ -66,9 +66,10 @@ const HeaderUser = () => {
 
 
     const onSubmitLogout = async () =>{
-        await dispatch(await AuthAction.asyncLogout());
+        await dispatch(await AuthAction.asyncLogout());       
         handleCloseLogout();
         navigate('/');
+        window.location.reload();
     }
 
     // useEffect(() => {
@@ -87,11 +88,13 @@ const HeaderUser = () => {
                     <i class="fa fa-search"></i>
                 </a>
             </div> */}
+            
+
             <nav className="dropdownmenu_container">
                 <ul className="dropdownmenu_children">
                     <li>
                     <div class="dropdown">
-                            <button class="dropbtn">Tìm luật sư</button>
+                            <button onClick={() => navigate("/major")} class="dropbtn">Tìm luật sư</button>
                             <div class="dropdown-content">
                                 <NavLink to="/major/LV01">Bảo hiểm</NavLink>
                                 <NavLink to="/major/LV02">Dân sự</NavLink>
@@ -130,6 +133,11 @@ const HeaderUser = () => {
                     </li>
                 </ul>    
             </nav>
+
+            
+
+             
+
             <div className="login">
                 {
                     accountInfo !== null && accountInfo.role == "user" ?
@@ -182,6 +190,115 @@ const HeaderUser = () => {
                     
                 }
             </div>
+
+            
+            
+
+            <label htmlFor="nav-mobile-input" className="small_icon">
+                <i class="fa-solid fa-bars"></i>
+            </label>
+            <input type="checkbox" name="" id="nav-mobile-input" className="nav_input" />
+
+            <label htmlFor="nav-mobile-input" className="nav_overlay"></label>
+
+            <nav className="dropdownmenu_container_mobile">
+                <label htmlFor="nav-mobile-input" className="close_icon">
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/delete-sign.png"/>
+                </label>
+                <ul className="dropdownmenu_children_mobile">
+                    <li>
+                        <div class="dropdown">
+                            <button onClick={() => navigate("/major")} class="dropbtn">Tìm luật sư</button>
+                            <div class="dropdown-content">
+                                <NavLink to="/major/LV01">Bảo hiểm</NavLink>
+                                <NavLink to="/major/LV02">Dân sự</NavLink>
+                                <NavLink to="/major/LV03">Đất đai</NavLink>
+                                <NavLink to="/major/LV04">Doanh nghiệp</NavLink>
+                                <NavLink to="/major/LV05">Giao thông vận tải</NavLink>
+                                <NavLink to="/major/LV06">Hành chính</NavLink>
+                                <NavLink to="/major/LV07">Hình sự</NavLink>
+                                <NavLink to="/major/LV08">Hôn nhân gia đình</NavLink>
+                                <NavLink to="/major/LV09">Lao động</NavLink>
+                                <NavLink to="/major/LV10">Sở hữu trí tuệ</NavLink>
+                                <NavLink to="/major/LV11">Thừa kế đất đai</NavLink>
+                                <NavLink to="/major/LV12">Thuế</NavLink>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Tư vấn pháp luật</button>
+                            {/* <div class="dropdown-content">
+                                <NavLink to="/major/LV01">Bài viết pháp luật</NavLink>
+                                <NavLink to="/major/LV01">Câu hỏi pháp luật</NavLink>
+                                <NavLink to="/major/LV01">Biểu mẫu</NavLink>
+                            </div> */}
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="dropbtn">Dịch vụ pháp lý</button>
+                        </div>
+                    </li>
+                    <li>
+                    <div class="dropdown">
+                            <button class="dropbtn">Đặt câu hỏi miễn phí</button>
+                        </div>
+                    </li>
+                    <li>
+                        {
+                            accountInfo !== null && accountInfo.role == "user" ?
+                                <>
+                                    <div className="account-info">
+                                        <div className="user-name">Hello {accountInfo.lastName}</div>
+                                        <div className="dropdown-content ">
+                                            <NavLink to='/profile'>Trang cá nhân</NavLink>
+                                            <NavLink to='/messenger'>Tin nhắn</NavLink>
+                                            <NavLink to='/update_info'>Cập nhật thông tin</NavLink>
+                                            <NavLink to='/change-password'>Đổi mật khẩu</NavLink>
+                                            <NavLink to='/meeting'>Cuộc hẹn</NavLink>
+                                            <a onClick={handleShowLogout}>Đăng xuất</a>
+                                        </div>
+                                    </ div>
+                                    <span className="noti-icon" onClick={() => {
+                                        setOpenNoti(!openNoti);
+                                        setShowCounter(false);
+                                    }
+                                    }
+                                    >
+                                        <img src="https://img.icons8.com/ios-filled/50/000000/appointment-reminders--v1.png" />
+                                        {
+                                            notifications.length > 0 && showCounter &&
+                                            <div className="counter">{notifications.length}</div>
+                                        }
+                                    </span>
+
+                                    {openNoti && (
+                                        <div className="notifications">
+                                            {notifications.map((n) => {
+                                                return (
+                                                    <span>
+                                                        <a className="notification" href={n.url} >{n.content}</a>
+                                                        <div className="messageBottom1">{format(n.createdAt)}</div>
+                                                    </span>
+
+                                                )
+                                            })}
+                                            {/* <button className="nButton" onClick={handleRead}>
+                                Mark as read
+                            </button> */}
+                                        </div>
+                                    )}
+                                </>
+                                :
+                                <div className="login-btn">
+                                    <a onClick={() => navigate(`/login`)}>Đăng nhập</a>
+                                </div>
+
+                        }
+                    </li>
+                </ul>    
+            </nav>
             <Modal show={logoutModal} enforceFocus={false} className="modal-min modal-alert">
                     <Modal.Header>
                         <Modal.Title></Modal.Title>

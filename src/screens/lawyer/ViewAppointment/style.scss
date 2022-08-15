@@ -71,11 +71,13 @@
 
       .detail-meeting-image {
          margin-right: 20px;
+         cursor: pointer;
          img {
             max-width: 200px;
             max-height: 200px;
          }
       }
+
 
       .detail-meeting-info {
          .detail-meeting-info1 {
@@ -86,6 +88,10 @@
                font-weight: bold;
                margin-left: 5px;
             }
+         }
+
+         .detail-meeting-info12 {
+            margin-bottom: 10px;
          }
       }
     }

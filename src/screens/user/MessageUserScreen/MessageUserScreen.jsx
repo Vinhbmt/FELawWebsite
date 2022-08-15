@@ -136,7 +136,7 @@ const MessageUserScreen = () => {
     <div className="message-screen">
       <div className="message-screen-padding"></div>
       <div className="message-screen-container">
-        <div className="message-screen-sidebar">
+        <div className="message-screen-sidebar1">
           <div className="online-user">
             <h3>Online User</h3>
             <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
@@ -155,7 +155,7 @@ const MessageUserScreen = () => {
             })}
           </div>
         </div>
-        <div className="message-screen-content">
+        <div className="message-screen-content1">
           <div className="message-navbar">
             <div className="chat-username"><strong>{receiver?.firstName + " " + receiver?.lastName}</strong></div>
             

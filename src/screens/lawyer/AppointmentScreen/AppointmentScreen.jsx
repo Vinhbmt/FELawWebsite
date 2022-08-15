@@ -5,6 +5,7 @@ import { useTitle } from "../../../core/customHook";
 import AccountAdminAction from "../../../redux/actions/AccountAdminAction";
 import AuthAction from "../../../redux/actions/AuthAction";
 import AccountUserAction from "../../../redux/actions/AccountUserAction";
+import meetingStatus from "../../../core/utils/meetingStatus";
 import "./style.scss"
 
 const AppointmentScreen = () => {
@@ -86,6 +87,7 @@ const AppointmentScreen = () => {
                                 <th>Tên khách hàng</th>
                                 <th>Ngày</th>
                                 <th>Giờ</th>
+                                <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -98,6 +100,7 @@ const AppointmentScreen = () => {
                                         <td>{m.userId.firstName + " " + m.userId.lastName}</td>
                                         <td>{formatDate(m.meetingDate)}</td>
                                         <td>{formatTime(m.timeCode)}</td>
+                                        <td>{meetingStatus.codeToStatus[m.status]}</td>
                                         <td onClick={() => navigate(`${m._id}`)}>Xem chi tiết</td>
                                         {/* <td>
                                              <button className="btn btn-danger">Chặn</button>

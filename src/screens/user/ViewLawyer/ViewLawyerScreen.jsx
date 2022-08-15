@@ -16,6 +16,7 @@ import {toast} from "react-toastify"
 import convert from "../../../core/utils/majorConvert";
 import Fancybox from "../../../components/fancyBox/FancyBox";
 import { SocketContext } from "../../../core/config/socket.config";
+import { Rating } from '@mui/material';
 
 const ViewLawyerScreen = () => {
     const dispatch = useDispatch();
@@ -80,6 +81,7 @@ const ViewLawyerScreen = () => {
             setBookingData({...bookingData, lawyerId: params.lawyerId});
         }
     }
+    console.log(lawyer);
 
     const bookingLawyer = async (data) => {
         const response = await dispatch(await AccountUserAction.asyncBookingLawyer(data))
@@ -145,23 +147,27 @@ const ViewLawyerScreen = () => {
                         </div> */}
                     <Fancybox options={{ infinite: false }}>
                         <div className="certi">
-                            <h4>Bằng cấp</h4>
-                            <button
-                                data-fancybox="gallery"
-                                data-src={listImage[0]}
-                            //className="btn btn-primary"
-                            >
-                                <img className="IDImage" src={listImage[0]} alt="idImage" />
-                            </button>
+                            <div>
+                                <h4>Bằng cấp</h4>
+                                <button
+                                    data-fancybox="gallery"
+                                    data-src={listImage[0]}
+                                //className="btn btn-primary"
+                                >
+                                    <img className="IDImage" src={listImage[0]} alt="idImage" />
+                                </button>
+                            </div>
 
-                            <h4>Chứng chỉ</h4>
-                            <button
-                                data-fancybox="gallery"
-                                data-src={listImage[1]}
-                            //className="btn btn-primary"
-                            >
-                                <img className="IDImage" src={listImage[1]} alt="idImage" />
-                            </button>
+                            <div>
+                                <h4>Chứng chỉ</h4>
+                                <button
+                                    data-fancybox="gallery"
+                                    data-src={listImage[1]}
+                                //className="btn btn-primary"
+                                >
+                                    <img className="IDImage" src={listImage[1]} alt="idImage" />
+                                </button>
+                            </div>
                         </div>
                     </Fancybox>
                     
@@ -203,7 +209,46 @@ const ViewLawyerScreen = () => {
                         <h2>Thông tin luật sư</h2>
                     </section>
                     <section>
-                        <h2>Nhận xét</h2><span className="fa fa-star" style={{color: "#fbc926"}}></span><span className="fa fa-star" style={{color: "#fbc926"}}></span><span className="fa fa-star" style={{color: "#fbc926"}}></span><span className="fa fa-star" style={{color: "#fbc926"}}></span><span className="fa fa-star" style={{color: "#fbc926"}}></span>
+                        <h2>Nhận xét</h2>
+                        {/* <div className="user-feedback">
+                            <Rating name="read-only" value={4} readOnly />
+                            <div className="user-comment">
+                                <div className="user-name1">
+                                    <p>Nguyễn Công Vinh</p>
+                                </div>
+                                <div className="comment">
+                                    <p>Tôi cảm ơn LS Nguyễn Công Quyền thuộc Đoàn luật sư thành phố Hà Nội có kiến thức pháp luật rất sâu sắc, đồng thời luôn có sự nhiệt tình trách nhiệm cao đã giúp đỡ cho người thân của tôi trong vụ án hình sự vừa qua. Một kết quả ngoài mong đợi của gia đình. Cảm ơn Luật sư chúc Luật sư luôn khoẻ mạnh.</p>
+                                </div>
+                            </div>
+                        </div> */}
+                        {lawyer.feedbacks != null && 
+                            lawyer.feedbacks.map((f) => {
+                                return (
+                                    <div className="user-feedback">
+                                        <Rating name="read-only" value={f.rating} readOnly />
+                                        <div className="user-comment">
+                                            <div className="user-name1">
+                                                <p>{f.user.firstName + " " + f.user.lastName}</p>
+                                            </div>
+                                            <div className="comment">
+                                                <p>{f.feedback}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        {/* <div className="user-feedback">
+                            <Rating name="read-only" value={5} readOnly />
+                            <div className="user-comment">
+                                <div className="user-name1">
+                                    <p>Lương Tiến Mạnh</p>
+                                </div>
+                                <div className="comment">
+                                    <p>Thay mặt gia đình xin được cám ơn Luật sư rất nhiều. Luật sư đã bào chữa thành công, ngoài sự mong đợi của gia đình cho người thân của chúng tôi trong vụ án hình sự. Tôi rất hài lòng về trách nhiệm, về tinh người và về kiến thức pháp luật của Luật sư. Chúc LS Nguyễn Công Quyền khoẻ mạnh và thành công hơn nữa!</p>
+                                </div>
+                            </div>
+                        </div> */}
                     </section>
                 </div>
 

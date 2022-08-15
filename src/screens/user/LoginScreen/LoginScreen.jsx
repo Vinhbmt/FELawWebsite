@@ -44,6 +44,7 @@ const LoginScreen = () => {
         try {
             const response = await dispatch(await AuthAction.asyncLogin({...data}));
             if(response.status === 200) {
+            console.log(response)
             await dispatch(await AuthAction.asyncGetAccountInfo("user"));
             navigate('/');
             toast.success("Đăng nhập thành công !");

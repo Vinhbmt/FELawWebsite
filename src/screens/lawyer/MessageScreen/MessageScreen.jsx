@@ -165,8 +165,8 @@ const MessageLawyerScreen = () => {
   }, [messageList]);
 
   return (
-    <div className="message-screen1">
-      <div className="message-screen-container1">
+    <div className="message-screen14">
+      <div className="message-screen-container13">
         <div className="message-screen-sidebar1">
           <div className="online-user1">
             <h3>Online User</h3>
@@ -176,8 +176,11 @@ const MessageLawyerScreen = () => {
             { listConversation.length > 0 &&
             listConversation.map((c) => {
               return (
-                <button className="list-conver" onClick={() => navigate(`${c.receiver._id}`)}>
-                  {c.receiver.firstName + " " + c.receiver.lastName}
+                <button className="list-conver1" onClick={() => navigate(`/lawyer/message/${c.receiver._id}`)}>
+                  <div>
+                    <img src={c.receiver.imgUrl} />
+                  </div>
+                  <p className="list-conver-nav">{c.receiver.firstName + " " + c.receiver.lastName}</p>
                 </button>
               );
             })}

@@ -10,13 +10,27 @@
 }
 
 .header_logo {
-    padding-left: 200px;
-    padding-right: 100px;
+    // padding-left: 15%;
+    // padding-right: 15%;
+    margin-left: 15%;
+    // margin-right: 10%;
     cursor: pointer;
 }
 
 .logo {
     height: 100px;
+}
+
+.small_icon {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    cursor: pointer;
+
+    i {
+        font-size: 28px;
+    }
 }
 
 
@@ -183,6 +197,54 @@ a:hover {
     cursor: pointer;
 }
 
+.nav_overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.3);
+    display: none;
+    animation: fadeIn linear 0.2s;
+}
+
+#nav_mobile_input {
+    display: none;
+}
+
+.dropdownmenu_container_mobile {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    background-color: white;
+    z-index: 3;
+    height: 100%;
+    border-left: 0.5px solid gray;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all linear 0.2s;
+
+    ul {
+        width: 100%;
+        padding-right: 20px;
+    }
+
+    li {
+        list-style: none;
+        border-bottom: 0.5px solid gray;
+    }
+
+    .close_icon {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 10px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+}
+
 .dropdownmenu_container{
     display: flex;
     flex-direction: row;
@@ -251,3 +313,71 @@ a:hover {
   .dropdown:hover .dropbtn {color: #0a8bb6;}
 
   .account-info:hover .dropdown-content {display: block;}
+
+  @media  (max-width: 768px) {
+    .header_logo {
+        margin-left: 5%;
+    }
+    .logo {
+        height: 80px;
+    }
+
+    .dropdownmenu_container{
+        display: none;
+    }
+
+    .dropdownmenu_container_mobile {
+        display: block;
+    }
+
+    .login {
+        display: none;
+    }
+
+    .small_icon {
+        display: block;
+        margin-right: 20px;
+    }
+
+    #nav-mobile-input {
+        display: none;
+    }
+
+    .nav_input:checked ~ .nav_overlay {
+        display: block;
+        
+    }
+
+    .nav_input:checked ~ .dropdownmenu_container_mobile{  
+        transform: translateX(0%);
+        opacity: 1;
+    }
+
+    .login-btn {
+        padding: 15px;
+    }
+
+    // .dropdown {
+    //     display: flex;
+    //     flex-direction: row-reverse;
+    // }
+
+    .dropdown-content {
+        right: 100px;
+        top: 10px;
+        border-top-right-radius: 10px;
+        border-left: none;
+        border-right: #0a8bb6 solid 2px;
+        border-bottom-left-radius: 10px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}

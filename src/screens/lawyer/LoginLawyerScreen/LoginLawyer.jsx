@@ -59,6 +59,7 @@ const LoginScreen = () => {
         } catch (error) {
             toast.error("Tài khoản hoặc mật khẩu không đúng !");       
         }
+        reset();
                    
     }
     

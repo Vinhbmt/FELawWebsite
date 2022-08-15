@@ -78,8 +78,32 @@ const ViewAppointment = () => {
 
     const handleCallVideo = () => {
         navigate(`/videocall/${meetingInfo._id}`);
-        callUser(meetingInfo.userId.socketId, meetingInfo.lawyerId.socketId);
+        callUser(meetingInfo.userId.socketId, meetingInfo.lawyerId.socketId, meetingInfo._id);
     } 
+
+    const handleUpdateDoneMeeting = async () => {
+        const response = await dispatch(
+          await LawyerAction.asyncUpdateAppointment({
+            meetingId: meetingInfo._id,
+            status: 3,
+            price: meetingInfo.price,
+          })
+        );
+        console.log(response);
+        if (response.status == 200) {
+          socket.emit("notification", {
+            userId: meetingInfo.userId._id,
+            content: `${
+              meetingInfo.lawyerId.firstName + " " + meetingInfo.lawyerId.lastName
+            } đã hoàn thành cuộc hẹn`,
+            url: `http://localhost:3000/lawyer/appointment/${meetingInfo._id}`,
+          });
+          toast.success("Bạn đã hoàn thành cuộc hẹn!");
+          setLoading(true);
+        } else {
+          toast.error(response.data.message);
+        }
+      };
 
     return(
         meetingInfo != null &&
@@ -122,6 +146,9 @@ const ViewAppointment = () => {
             <div className="detail-meeting-container">
                 <div className="detail-meeting-title">Thông tin chi tiết cuộc hẹn</div>
                 <div className="detail-meeting">
+                    <div className="detail-meeting-image">
+                        <img src={meetingInfo.userId.imgUrl} alt="lawyerName" />
+                    </div>
                     <div className="detail-meeting-info">
                         <div className="detail-meeting-info1">
                             <label>Tên khách hàng: </label>
@@ -135,10 +162,23 @@ const ViewAppointment = () => {
                             <label>Ngày: </label>
                             <div>{formatDate(meetingInfo.meetingDate)}</div>
                         </div>
-                        {meetingInfo.status == 2 &&
-                        <div className="video-call">
-                            <i onClick={handleCallVideo} class="fas fa-video"></i>
-                        </div>
+                            {meetingInfo.status == 2 &&
+                            <>
+                                <div className="video-call">
+                                    <i onClick={handleCallVideo} class="fas fa-video"></i>
+                                </div>
+                                <div className="detail-meeting-info12">
+                                    <button
+                                        className="btn-success"
+                                        onClick={handleUpdateDoneMeeting}
+                                    >
+                                        Đánh dấu là hoàn thành
+                                    </button>
+                                </div>
+                                <div className="detail-meeting-info1">
+                                    <button className="btn-danger">Báo cáo cuộc hẹn</button>
+                                </div>
+                            </>
                         }
                     </div>
                 </div>

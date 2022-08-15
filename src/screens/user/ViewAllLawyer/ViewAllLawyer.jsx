@@ -8,8 +8,9 @@ import convert from "../../../core/utils/majorConvert";
 import "./style.scss"
 import { useParams } from "react-router-dom";
 import reconvert from "../../../core/utils/majorReconvert";
+import Pagination from "../../../components/Pagination/Pagination";
 
-const FilterLawyer = () => {
+const ViewAllLawyer = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const [province, setProvince] = useState([]);
@@ -18,24 +19,30 @@ const FilterLawyer = () => {
     const [addressChoice, setAddressChoice] = useState("");
     const [result, setResult] = useState({major: "", address: ""});
 
+    const [currentPage, setCurrentPage] = useState(1);
+  	const [postsPerPage] = useState(5);
+
+	//Get current post
+	const indexOfLastPost = currentPage * postsPerPage;
+  	const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  	const currentPosts = listLawyers.slice(indexOfFirstPost, indexOfLastPost)
+
+    // Change page
+	 const paginate = pageNumber => setCurrentPage(pageNumber);
+
     const getListLawyer = async () => {
-        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(2, {"majorFields": params.majorId, "address": ""}));
+        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(2, {"majorFields": "", "address": ""}));
         console.log(response);
         if(response.status === 201) {
             await setListLawyers(response.data);
         }
     }
 
-    function lowerFirstLetter(string) {
-        return string.charAt(0).toLocaleLowerCase() + string.slice(1);
-      }
-
-    console.log(params);
 
     useEffect(() => {
         getListLawyer();
-        setResult({major: convert(params.majorId).toLowerCase()});
-    }, [params.majorId])
+        //setResult({major: convert(params.majorId).toLowerCase()});
+    }, [])
 
     const getProvince = async () => {
         const response = await axios({
@@ -70,7 +77,7 @@ const FilterLawyer = () => {
                 <span>William E. Gladstone</span>
             </div>
             <div className="filter-container">
-                <h1>Luật sư {result.major ? `lĩnh vực ${result.major.toLocaleLowerCase()}` : ""} tại {result.address ? lowerFirstLetter(result.address) : `tất cả tỉnh thành`} </h1>
+                <h1>Luật sư các lĩnh vực tại tất cả tỉnh thành</h1>
                 <div className="filter-content">
                     <div className="filter-sidebar">
                         <div className="major_lawyer">
@@ -107,9 +114,15 @@ const FilterLawyer = () => {
                     {
                     listLawyers.length > 0 ?
                     <div className="filter-lawyer">
-                        {listLawyers.map((lawyer) =>
+                        {currentPosts.map((lawyer) =>
                             <RowCard lawyer={lawyer} />
                         )}
+                        <Pagination
+                            className="pagination"
+							postsPerPage={postsPerPage}
+							totalPosts={listLawyers.length}
+							paginate={paginate}
+						/>
                     </div>
                     :
                     <div className="filter-lawyer1"><strong>Không tìm thấy luật sư nào thỏa mãn</strong></div>
@@ -120,4 +133,4 @@ const FilterLawyer = () => {
     )
 }
 
-export default FilterLawyer;
+export default ViewAllLawyer;

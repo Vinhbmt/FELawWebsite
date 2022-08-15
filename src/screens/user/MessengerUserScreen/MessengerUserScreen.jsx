@@ -138,7 +138,8 @@ const MessengerUserScreen = () => {
             <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" />
           </div>
           <div className="list-online-user">
-            {listConversation.map((c) => {
+            { listConversation != null &&
+            listConversation.map((c) => {
               return (
                 <button className="list-conver" onClick={() => navigate(`/messages/${c.receiver._id}`)}>
                   <div>
@@ -154,9 +155,9 @@ const MessengerUserScreen = () => {
         <div className="message-screen-content">
           <div className="message-navbar">
             <div className="chat-username"></div>
-            <div className="video-call">
+            {/* <div className="video-call">
               <i class="fas fa-video"></i>
-            </div>
+            </div> */}
           </div>
           <div className="conversation12">
             Chọn 1 cuộc trò chuyện để mở

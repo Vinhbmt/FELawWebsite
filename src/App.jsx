@@ -37,6 +37,7 @@ import { ContextProvider, firstSocket, SocketContext } from './core/config/socke
 import VideoCallScreen from './screens/videoCall/VideoCallScreen';
 import Peer from 'simple-peer';
 import { useRef } from 'react';
+import ViewAllLawyer from './screens/user/ViewAllLawyer/ViewAllLawyer';
 const io = require('socket.io-client');
 
 
@@ -50,6 +51,7 @@ function App() {
         <Suspense fallback="">
           <BrowserRouter>
             <Routes>
+              
               <Route path="/admin">
                 <Route path="login" element={<LoginAdminScreen/>}/>
                 <Route path="home" element={
@@ -73,6 +75,7 @@ function App() {
                 <Route index element={<Navigate to={'home'}/>}/>
               </Route>
               <Route path="/lawyer">
+                <Route path="login" element={<LoginLawyer/>}/>
                 <Route path="home" element={
                 <>
                   <SideBarLawyer/>
@@ -115,7 +118,7 @@ function App() {
                   <VideoCallScreen />
                 </>
                 } /> */}
-                <Route path="login" element={<LoginLawyer/>}/>
+                
                 <Route path="register" element={<RegisterLawyer/>}/> 
                 <Route path="change_password" element={<ChangePasswordLawyer/>}/>
                 <Route index element={<Navigate to={'home'}/>}/>          
@@ -135,13 +138,7 @@ function App() {
                   <FooterUser/>
                 </>
                 } />
-                <Route path="login" element={
-                <>
-                  <HeaderUser/>
-                  <LoginScreen />
-                  {/* <FooterUser/> */}
-                </>
-                }/>
+                
                 <Route path="register" element={
                 <>
                   <HeaderUser/>
@@ -181,6 +178,13 @@ function App() {
                 <>
                   <HeaderUser/>
                   <FilterLawyer />
+                  <FooterUser/>
+                </>
+                }/>
+                <Route path="major" element={
+                <>
+                  <HeaderUser/>
+                  <ViewAllLawyer />
                   <FooterUser/>
                 </>
                 }/>
@@ -224,6 +228,13 @@ function App() {
                   <VideoCallScreen />
                 </>
                 } />
+                <Route path="login" element={
+                <>
+                  <HeaderUser/>
+                  <LoginScreen />
+                  {/* <FooterUser/> */}
+                </>
+                }/>
               </Route>
             </Routes>
           </BrowserRouter>

@@ -30,7 +30,7 @@
     display: flex;
     background-image: url(345.jpg);
     // background-attachment: fixed;
-    // background-position: center;
+    background-position: center;
     // background-repeat: no-repeat;
     background-size: cover;
     height: 800px;
@@ -213,8 +213,7 @@
 
     div {
         text-align: center;
-        margin-left: 250px;
-        margin-right: 250px;
+        width: 80%;
         color: white;
         background-color: rgba(0, 0, 0, 0.5);
         padding-left: 20px;
@@ -226,5 +225,58 @@
             font-size: 20px;
             margin-top: 30px;
         }
+    }
+}
+
+.seemore:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media  (max-width: 768px) {
+    .background_image {
+        height: 500px;
+    }
+
+    .title {
+        font-size: 50px;
+    }
+
+    .decor-image {
+        div {
+            width: 90%;
+        }
+    }
+
+    .container_0 {
+        display: none;
+    }
+    .decor {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        .decor-card {
+            flex-direction: column;
+            align-items: center;
+
+            .card1 {
+                width: 60%;
+            }
+        }
+
+        .decor-text {
+            width: 80%;
+            text-align: center;
+            margin: auto;
+        }
+    }
+
+    .grid {
+        margin: 20px;
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 10px;
+        justify-items: center;
     }
 }

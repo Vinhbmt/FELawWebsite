@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import classnames from 'classnames';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
@@ -12,6 +12,9 @@ import users from "../../../data";
 import AccountAdminAction from "../../../redux/actions/AccountAdminAction";
 import AuthAction from "../../../redux/actions/AuthAction";
 import { UserStatus } from "../../../redux/constants";
+import { toast } from 'react-toastify';
+import { SocketContext } from "../../../core/config/socket.config";
+import LawyerAdminAction from "../../../redux/actions/LawyerAdminAction";
 
 const AccountManagementScreen = () => {
     const dispatch = useDispatch();
@@ -19,7 +22,8 @@ const AccountManagementScreen = () => {
     const [listUsers, setListUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [ratingScore, setRatingScore] = useState(null);
-    const [activeSelect, setActiveSelect] = useState("1");
+    const [activeSelect, setActiveSelect] = useState("0");
+    const socket = useContext(SocketContext)
 
     const asyncGetAccountInfo = async () => {
         const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
@@ -32,21 +36,53 @@ const AccountManagementScreen = () => {
         asyncGetAccountInfo();
     }, [])
 
-    const getListUser = async () => {
-        const response = await dispatch(await AccountAdminAction.asyncGetUser());
-        if(response.status === 200) {
+    const getListUser = async (select) => {
+        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(select, {}));
+        if(response.status === 201) {
+            console.log(response)
             await setListUsers(response.data);
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        getListUser();
-    }, [])
+        getListUser(activeSelect);
+    }, [activeSelect, loading])
+
+    const handleBlockUser = async (user, type) => {
+        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(user.email, type, ""));
+        if(response.status == 200){
+            setLoading(true);
+            socket.emit("notification", {
+                userId: user.id,
+                content: "Tài khoản của bạn đã bị chặn!"
+              });
+            toast.warning("Đã chặn người dùng!");
+        }
+    }
+
+    const handleUnblockUser = async (user, type) => {
+        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(user.email, type, ""));
+        if(response.status == 200){
+            setLoading(true);
+            socket.emit("notification", {
+                userId: user.id,
+                content: "Tài khoản của bạn đã được bỏ chặn!"
+              });
+            toast.warning("Đã bỏ chặn người dùng!");
+        }
+    }
+
 
     return (
         <div className="user-container">
             <h1>Quản lý người dùng</h1>
+            <div className="status-select">
+                <select defaultValue="1" onChange={(e) => setActiveSelect(e.target.value) }>
+                    <option value="0">Đang hoạt động</option>
+                    <option value="4">Bị chặn</option>                    
+                </select>
+            </div>
             <div  className="child-container">                
                 <div className="user-info">
                     <table>
@@ -67,7 +103,12 @@ const AccountManagementScreen = () => {
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
                                         <td>
-                                             <button className="btn btn-danger">Chặn</button>
+                                            {activeSelect == 0 &&
+                                             <button className="btn btn-danger" onClick={handleBlockUser(user, 4)}>Chặn</button>
+                                            }
+                                            {activeSelect == 4 &&
+                                             <button className="btn btn-danger" onClick={handleUnblockUser(user, 0)}>Bỏ chặn</button>
+                                            }
                                         </td>
                                     </tr>
                                 )

@@ -7,6 +7,7 @@ import "./style.scss";
 import { toast } from "react-toastify";
 import { SocketContext } from "../../../core/config/socket.config";
 import LawyerAction from "../../../redux/actions/LawyerAction";
+import { Rating } from '@mui/material';
 
 const ViewMeetingUser = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,9 @@ const ViewMeetingUser = () => {
   const params = useParams();
   const [meetingInfo, setMeetingInfo] = useState(null);
   const [paymentContent, setPaymentContent] = useState("");
+  const [feedback, setFeedback] = useState("")
   const [loading, setLoading] = useState(false);
+  const [rating, setRating] = useState(0);
   const {
     authState: { accountInfo, token },
   } = useSelector((state) => {
@@ -106,29 +109,52 @@ const ViewMeetingUser = () => {
     }
   };
 
-  const handleUpdateDoneMeeting = async () => {
-    const response = await dispatch(
-      await LawyerAction.asyncUpdateAppointment({
-        meetingId: meetingInfo._id,
-        status: 3,
-        price: meetingInfo.price,
-      })
-    );
-    console.log(response);
-    if (response.status == 200) {
-      socket.emit("notification", {
-        userId: meetingInfo.lawyerId._id,
-        content: `${
-          meetingInfo.userId.firstName + " " + meetingInfo.userId.lastName
-        } đã hoàn thành cuộc hẹn`,
-        url: `http://localhost:3000/lawyer/appointment/${meetingInfo._id}`,
-      });
-      toast.success("Bạn đã hoàn thành cuộc hẹn!");
-      setLoading(true);
-    } else {
+  // const handleUpdateDoneMeeting = async () => {
+  //   const response = await dispatch(
+  //     await LawyerAction.asyncUpdateAppointment({
+  //       meetingId: meetingInfo._id,
+  //       status: 3,
+  //       price: meetingInfo.price,
+  //     })
+  //   );
+  //   console.log(response);
+  //   if (response.status == 200) {
+  //     socket.emit("notification", {
+  //       userId: meetingInfo.lawyerId._id,
+  //       content: `${
+  //         meetingInfo.userId.firstName + " " + meetingInfo.userId.lastName
+  //       } đã hoàn thành cuộc hẹn`,
+  //       url: `http://localhost:3000/lawyer/appointment/${meetingInfo._id}`,
+  //     });
+  //     toast.success("Bạn đã hoàn thành cuộc hẹn!");
+  //     setLoading(true);
+  //   } else {
+  //     toast.error(response.data.message);
+  //   }
+  // };
+
+  const handleSendFeedback = async () => {
+    const response = await dispatch(await LawyerAction.asyncUpdateAppointment({meetingId: meetingInfo.id,  feedback: feedback, rating: rating}));
+    if(response.status == 200) {
+      handleCloseFeedback();
+      toast.success("Bạn đã gửi nhận xét đến luật sư!");
+    }
+    else {
       toast.error(response.data.message);
     }
-  };
+  }
+
+  console.log(meetingInfo);
+
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  const handleShowFeedback = () => {
+    setShowFeedbackModal(true);
+  }
+
+  const handleCloseFeedback = () => {
+    setShowFeedbackModal(false);
+  }
 
   const handleCallVideo = () => {
     navigate(`/videocall/${meetingInfo._id}`);
@@ -140,12 +166,13 @@ const ViewMeetingUser = () => {
     );
   };
 
+
   return (
     meetingInfo != null && (
       <>
         <div className="padding2"></div>
         <div>
-          <div className="processing">
+          <div className="processing5">
             <div className="processing1">
               <div
                 className={
@@ -197,7 +224,7 @@ const ViewMeetingUser = () => {
             </div>
           </div>
         </div>
-        <div className="detail-meeting-container">
+        <div className="detail-meeting-container13">
           <div className="detail-meeting-title">
             Thông tin chi tiết cuộc hẹn
           </div>
@@ -234,7 +261,7 @@ const ViewMeetingUser = () => {
                   <div className="video-call">
                     <i onClick={handleCallVideo} class="fas fa-video"></i>
                   </div>
-                  <div className="detail-meeting-info12">
+                  {/* <div className="detail-meeting-info12">
                     <button
                       className="btn-success"
                       onClick={handleUpdateDoneMeeting}
@@ -244,7 +271,25 @@ const ViewMeetingUser = () => {
                   </div>
                   <div className="detail-meeting-info1">
                     <button className="btn-danger">Báo cáo cuộc hẹn</button>
+                  </div> */}
+                </>
+              )}
+              {meetingInfo.status == 3 && (
+                <>
+                  <div className="feedback">
+                    <button className="btn btn-primary" onClick={handleShowFeedback}>Đánh giá luật sư</button>
                   </div>
+                  {/* <div className="detail-meeting-info12">
+                    <button
+                      className="btn-success"
+                      onClick={handleUpdateDoneMeeting}
+                    >
+                      Đánh dấu là hoàn thành
+                    </button>
+                  </div>
+                  <div className="detail-meeting-info1">
+                    <button className="btn-danger">Báo cáo cuộc hẹn</button>
+                  </div> */}
                 </>
               )}
             </div>
@@ -307,7 +352,58 @@ const ViewMeetingUser = () => {
               className="btn btn-default"
               onClick={handleCloseViewPayment}
             >
-              Cancel
+              Hủy
+            </button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={showFeedbackModal}
+          enforceFocus={false}
+          className="modal-min modal-alert"
+        >
+          <Modal.Header>
+            <Modal.Title>Đưa ra nhận xét cho luật sư</Modal.Title>
+            <button
+              className="btn btn-light"
+              onClick={handleCloseFeedback}
+            ></button>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="payment-body">
+              <div className="payment-body1">
+                <div>Tới luật sư: </div>
+                <span>
+                  {meetingInfo.lawyerId.firstName +
+                    " " +
+                    meetingInfo.lawyerId.lastName}
+                </span>
+              </div>
+              <div className="payment-body1">
+                <div>Đánh giá: </div>
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(e) => {
+                    setRating(e.target.value);
+                  }}
+                />
+              </div>
+              <div>
+                <div>Nhận xét: </div>
+                <textarea onChange={(e) => setFeedback(e.target.value)} />
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <button className="btn btn-primary" onClick={handleSendFeedback}>
+              Gửi
+            </button>
+            <button
+              className="btn btn-default"
+              onClick={handleCloseFeedback}
+            >
+              Hủy
             </button>
           </Modal.Footer>
         </Modal>

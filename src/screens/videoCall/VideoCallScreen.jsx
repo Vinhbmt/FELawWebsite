@@ -1,5 +1,6 @@
 import React from "react";
 import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
+import NotificationVideoCall from "../../components/NotificationVideocall/NotificationVideocall";
 import { Typography, AppBar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from "react-router-dom";
@@ -46,13 +47,11 @@ const useStyles = makeStyles((theme) => ({
                 <Typography variant="h2" align="center">Video Chat</Typography>
             </AppBar>
             <VideoPlayer />
-            {/* <Sidebar>
-                <Notifications />
-            </Sidebar> */}
+            <NotificationVideoCall />
         </div>
-        <div>
+        {/* <div>
             <button>quay laij</button>
-        </div>
+        </div> */}
         </>
     )
   }

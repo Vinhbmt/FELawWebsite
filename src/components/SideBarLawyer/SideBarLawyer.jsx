@@ -186,10 +186,10 @@ const SideBarLawyer = () => {
           </Modal.Header>
           <Modal.Body>{call.name} đang gọi</Modal.Body>
           <Modal.Footer>
-            <button className="btn btn-danger" onClick={handleAcceptVideoCall}>
+            <button className="btn btn-primary" onClick={handleAcceptVideoCall}>
               Đồng ý
             </button>
-            <button className="btn btn-default" onClick={handleCloseVideoCall}>
+            <button className="btn btn-danger" onClick={handleCloseVideoCall}>
               Từ chối
             </button>
           </Modal.Footer>

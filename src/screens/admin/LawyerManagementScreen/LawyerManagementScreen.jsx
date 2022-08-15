@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import './style.scss';
-import { EyeOutlined, DeleteOutlined, CloudUploadOutlined } from "@ant-design/icons"
+import { EyeOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons"
 import lawyers from "../../../data";
 import LawyerAdminAction from "../../../redux/actions/LawyerAdminAction";
 import AuthAction from "../../../redux/actions/AuthAction";
@@ -44,6 +44,7 @@ const LawyerManagementScreen = () => {
     const getListLawyer = async (select) => {
         const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(select, {}));
         if(response.status === 201) {
+            console.log(response)
             await setListLawyers(response.data);
             setLoading(false);
         }
@@ -51,7 +52,7 @@ const LawyerManagementScreen = () => {
 
     useEffect(() => {
         getListLawyer(activeSelect);
-    }, [activeSelect])
+    }, [activeSelect, loading])
 
     console.log(activeSelect)
     
@@ -110,7 +111,31 @@ const LawyerManagementScreen = () => {
                 userId: lawyer.id,
                 content: "Tài khoản của bạn đã được xác thực"
               });
-            toast.success("Xác nhận thành công !");
+            toast.success("Xác nhận thành công!");
+        }
+    }
+
+    const handleBlockLawyer = async (lawyer, type, data) => {
+        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(lawyer.email, type, data));
+        if(response.status == 200){
+            setLoading(true);
+            socket.emit("notification", {
+                userId: lawyer.id,
+                content: "Tài khoản của bạn đã bị chặn!"
+              });
+            toast.warning("Đã chặn luật sư!");
+        }
+    }
+
+    const handleUnblockLawyer = async (lawyer, type, data) => {
+        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(lawyer.email, type, data));
+        if(response.status == 200){
+            setLoading(true);
+            socket.emit("notification", {
+                userId: lawyer.id,
+                content: "Tài khoản của bạn đã được hoạt động lại!"
+              });
+            toast.success("Đã bỏ chặn luật sư!");
         }
     }
 
@@ -141,13 +166,19 @@ const LawyerManagementScreen = () => {
                         <tbody>
                             { listLawyers.map((lawyer, index) => {
                                 return (
-                                    <tr key={lawyer.id} onClick={() => handleViewLawyer(lawyer)}>
+                                    <tr key={lawyer.id} >
                                         <td>{lawyer.fullName}</td>
                                         <td>{lawyer.majorFields && Array.isArray(lawyer.majorFields) ? lawyer.majorFields.join(",") : " " }</td>
                                         <td>{`${lawyer.description.substring(0, 50)}...`}</td>
                                         <td>{lawyer.yearExperiences}</td>
                                         <td>
-                                             <EyeOutlined className="view" onClick={showInfoModal} />
+                                             <EyeOutlined className="view" onClick={() => handleViewLawyer(lawyer)} />                                     
+                                        {activeSelect == 2 && 
+                                                <button className="btn btn-danger" onClick={() => handleBlockLawyer(lawyer, 3, lawyer.ratingScore)}>Chặn</button>                                            
+                                        }
+                                        {activeSelect == 3 && 
+                                                <button className="btn btn-success" onClick={() => handleUnblockLawyer(lawyer, 2, lawyer.ratingScore)}>Bỏ chặn</button>                                            
+                                        }
                                         </td>
                                     </tr>
                                 )
@@ -225,7 +256,7 @@ const LawyerManagementScreen = () => {
                                 
                                     <div class="field-info">
                                     <label className="label-field">Điểm đánh giá:</label>
-                                    { activeSelect !== "2" ?
+                                    { activeSelect == "1" ?
                                         <input
                                             type="number"
                                             //className="form-control"
@@ -245,7 +276,7 @@ const LawyerManagementScreen = () => {
                         }
                     </Modal.Body>
                     {
-                       activeSelect !== "2" ?
+                       activeSelect == "1" ?
                         <Modal.Footer>
                             <button className="btn btn-primary" onClick={()  => handleUpdateLawyer(pendingLawyer, 2, ratingScore)} >Xác nhận</button>
                             <button className="btn btn-danger" onClick={()  => handleUpdateLawyer(pendingLawyer, 3)} >Từ chối</button>
