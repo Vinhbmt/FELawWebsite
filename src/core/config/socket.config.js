@@ -37,13 +37,13 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
-    // navigator.mediaDevices
-    //   .getUserMedia({ video: true, audio: false })
-    //   .then((currentStream) => {
-    //     setStream(currentStream);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: false })
+      .then((currentStream) => {
+        setStream(currentStream);
 
-    //     myVideo.current.srcObject = currentStream;
-    //   });
+        myVideo.current.srcObject = currentStream;
+      });
 
     socket.on('callUser', ({ from, name: callerName, signal, meetingId }) => {
       console.log("call user");
@@ -99,7 +99,7 @@ const ContextProvider = ({ children }) => {
 
   const leaveCall = () => {
     setCallEnded(true);
-
+    setCallAccepted(false);
     connectionRef.current.destroy();
     // stream.getTracks()[0].stop();
     window.location.reload();

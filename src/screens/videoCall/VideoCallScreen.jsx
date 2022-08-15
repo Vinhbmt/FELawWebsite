@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
                 <Typography variant="h2" align="center">Video Chat</Typography>
             </AppBar>
             <VideoPlayer />
-            <NotificationVideoCall />
+            {/* <NotificationVideoCall /> */}
         </div>
         {/* <div>
             <button>quay laij</button>
