@@ -100,8 +100,8 @@ const SideBarLawyer = () => {
 
   console.log('callAccepted',callAccepted);
   const onSubmitLogout = async () => {
-    await dispatch(await AuthAction.asyncLogout());
     navigate("/lawyer/login");
+    await dispatch(await AuthAction.asyncLogout());
   };
 
   return (

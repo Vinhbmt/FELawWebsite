@@ -39,8 +39,8 @@ const SideBar = () => {
     // }, [])
 
     const onSubmitLogout = async () => {
-        await dispatch(await AuthAction.asyncLogout());
         navigate('/admin/login');
+        await dispatch(await AuthAction.asyncLogout());       
     }
 
     return(

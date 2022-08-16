@@ -65,6 +65,9 @@ class AuthAction extends ApiAction {
         return async (dispatch, getState) => {
             const { authState: { token, refreshToken } } = getState();
             let response;
+            if(!token || !refreshToken) {
+                return false;
+            }
             try {
                 response = await axios({
                     method: 'get',

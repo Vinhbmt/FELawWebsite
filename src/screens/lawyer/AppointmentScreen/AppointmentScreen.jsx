@@ -112,7 +112,7 @@ const AppointmentScreen = () => {
                         :
                         <tbody>
                             <tr>
-                                <td colSpan={5}>Không có người dùng</td>
+                                <td colSpan={5}>Không có cuộc hẹn</td>
                             </tr>
                         </tbody> }
                     </table>

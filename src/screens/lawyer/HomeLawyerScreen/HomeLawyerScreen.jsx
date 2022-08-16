@@ -27,14 +27,6 @@ const HomeLawyerScreen = () => {
 
   const { socket, setSocket, setCall , call } = useContext(SocketContext);
 
-  useEffect(() => {
-    socket.on("notification", showNoti);
-  }, []);
-
-  const showNoti = () => {
-    alert("Xác nhận luật sư thành công");
-  };
-
   const asyncGetAccountInfo = async () => {
     const response = await dispatch(
       await AuthAction.asyncGetAccountInfo("lawyer")

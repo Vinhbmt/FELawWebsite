@@ -23,7 +23,6 @@ const AccountManagementScreen = () => {
     const [loading, setLoading] = useState(false);
     const [ratingScore, setRatingScore] = useState(null);
     const [activeSelect, setActiveSelect] = useState("0");
-    const socket = useContext(SocketContext)
 
     const asyncGetAccountInfo = async () => {
         const response = await dispatch(await AuthAction.asyncGetAccountInfo("admin"));
@@ -37,8 +36,8 @@ const AccountManagementScreen = () => {
     }, [])
 
     const getListUser = async (select) => {
-        const response = await dispatch(await LawyerAdminAction.asyncGetLawyer(select, {}));
-        if(response.status === 201) {
+        const response = await dispatch(await AccountAdminAction.asyncGetUser(select));
+        if(response.status === 200) {
             console.log(response)
             await setListUsers(response.data);
             setLoading(false);
@@ -50,25 +49,17 @@ const AccountManagementScreen = () => {
     }, [activeSelect, loading])
 
     const handleBlockUser = async (user, type) => {
-        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(user.email, type, ""));
+        const response = await dispatch(await LawyerAdminAction.asyncUpdateLawyer(user.email, type, null));
         if(response.status == 200){
             setLoading(true);
-            socket.emit("notification", {
-                userId: user.id,
-                content: "Tài khoản của bạn đã bị chặn!"
-              });
             toast.warning("Đã chặn người dùng!");
         }
     }
 
     const handleUnblockUser = async (user, type) => {
-        const response = await dispatch( await LawyerAdminAction.asyncUpdateLawyer(user.email, type, ""));
+        const response = await dispatch(await LawyerAdminAction.asyncUpdateLawyer(user.email, type, null));
         if(response.status == 200){
             setLoading(true);
-            socket.emit("notification", {
-                userId: user.id,
-                content: "Tài khoản của bạn đã được bỏ chặn!"
-              });
             toast.warning("Đã bỏ chặn người dùng!");
         }
     }
@@ -104,10 +95,10 @@ const AccountManagementScreen = () => {
                                         <td>{user.lastName}</td>
                                         <td>
                                             {activeSelect == 0 &&
-                                             <button className="btn btn-danger" onClick={handleBlockUser(user, 4)}>Chặn</button>
+                                             <button className="btn btn-danger" onClick={() => handleBlockUser(user, 4)}>Chặn</button>
                                             }
                                             {activeSelect == 4 &&
-                                             <button className="btn btn-danger" onClick={handleUnblockUser(user, 0)}>Bỏ chặn</button>
+                                             <button className="btn btn-success" onClick={() =>handleUnblockUser(user, 0)}>Bỏ chặn</button>
                                             }
                                         </td>
                                     </tr>

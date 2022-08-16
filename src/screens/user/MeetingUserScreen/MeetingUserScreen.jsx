@@ -96,7 +96,7 @@ const MeetingUserScreen = () => {
                             })
                         :
                         <tr>
-                            <td colSpan={6}>Không có luật sư</td>
+                            <td colSpan={6}>Không có cuộc hẹn</td>
                         </tr>
                     }
                     {/* <tr>

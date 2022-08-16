@@ -202,12 +202,12 @@ const ViewLawyerScreen = () => {
                         <p>Giá qua email........Miễn phí</p>
                         <p>Giá qua điện thoại........Miễn phí</p>
                     </section>
-                    <section>
+                    {/* <section>
                         <h2>Liên hệ</h2>
                     </section>
                     <section>
                         <h2>Thông tin luật sư</h2>
-                    </section>
+                    </section> */}
                     <section>
                         <h2>Nhận xét</h2>
                         {/* <div className="user-feedback">

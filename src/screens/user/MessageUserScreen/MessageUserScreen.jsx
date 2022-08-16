@@ -131,6 +131,10 @@ const MessageUserScreen = () => {
     }
   };
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     listConversation != null &&
     <div className="message-screen">

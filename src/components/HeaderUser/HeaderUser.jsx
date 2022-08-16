@@ -66,10 +66,10 @@ const HeaderUser = () => {
 
 
     const onSubmitLogout = async () =>{
-        await dispatch(await AuthAction.asyncLogout());       
-        handleCloseLogout();
         navigate('/');
         window.location.reload();
+        await dispatch(await AuthAction.asyncLogout());       
+        handleCloseLogout();       
     }
 
     // useEffect(() => {

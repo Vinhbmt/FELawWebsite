@@ -105,7 +105,7 @@ const VideoPlayer = () => {
         )}
       </Grid>
       {callAccepted && !callEnded &&
-        <Button onClick={leaveCall}>Kết thúc</Button>
+        <button className="btn btn-danger" onClick={leaveCall}>Kết thúc</button>
       }
       <Button onClick={() => navigate(-1)}>Quay lại</Button>
     </>

@@ -20,7 +20,7 @@ const ProfileScreen = () => {
       const asyncGetAccountInfo = async () => {
         const response = await dispatch(await AuthAction.asyncGetAccountInfo("user"));
         if(!response) {
-          navigate('/login');
+          navigate("/login");
         }
       };
     
@@ -61,6 +61,7 @@ const ProfileScreen = () => {
     console.log(listPayment);
 
     return (
+        accountInfo !== null &&
         <div className="profile-container">
             <div className="padding1">
                 <strong>Trang cá nhân người dùng</strong>

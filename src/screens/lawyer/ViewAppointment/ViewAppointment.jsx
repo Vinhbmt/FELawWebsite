@@ -93,10 +93,10 @@ const ViewAppointment = () => {
         if (response.status == 200) {
           socket.emit("notification", {
             userId: meetingInfo.userId._id,
-            content: `${
+            content: `Luật sư ${
               meetingInfo.lawyerId.firstName + " " + meetingInfo.lawyerId.lastName
             } đã hoàn thành cuộc hẹn`,
-            url: `http://localhost:3000/lawyer/appointment/${meetingInfo._id}`,
+            url: `http://localhost:3000/meeting/${meetingInfo._id}`,
           });
           toast.success("Bạn đã hoàn thành cuộc hẹn!");
           setLoading(true);
@@ -164,20 +164,20 @@ const ViewAppointment = () => {
                         </div>
                             {meetingInfo.status == 2 &&
                             <>
-                                <div className="video-call">
+                                {/* <div className="video-call">
                                     <i onClick={handleCallVideo} class="fas fa-video"></i>
-                                </div>
+                                </div> */}
                                 <div className="detail-meeting-info12">
                                     <button
-                                        className="btn-success"
+                                        className="btn btn-success"
                                         onClick={handleUpdateDoneMeeting}
                                     >
                                         Đánh dấu là hoàn thành
                                     </button>
                                 </div>
-                                <div className="detail-meeting-info1">
+                                {/* <div className="detail-meeting-info1">
                                     <button className="btn-danger">Báo cáo cuộc hẹn</button>
-                                </div>
+                                </div> */}
                             </>
                         }
                     </div>
